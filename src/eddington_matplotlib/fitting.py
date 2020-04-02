@@ -1,6 +1,6 @@
 from pathlib import Path
-
 import numpy as np
+from eddington_core import FitData
 
 from eddington_matplotlib import PlotConfiguration
 from eddington_matplotlib.util import (
@@ -15,7 +15,7 @@ from eddington_matplotlib.util import (
 
 def plot_fitting(
     func,
-    data,
+    data: FitData,
     plot_configuration: PlotConfiguration,
     a: np.ndarray,
     step: float = None,
