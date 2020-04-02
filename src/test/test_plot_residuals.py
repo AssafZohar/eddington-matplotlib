@@ -2,7 +2,7 @@ from pathlib import Path
 from unittest import TestCase
 
 from eddington_matplotlib import plot_residuals
-from test.plot_base_test_case import PlotBaseTestCase
+from test.base_test_cases import PlotBaseTestCase
 
 
 class PlotResidualsBaseTestCase(PlotBaseTestCase):
@@ -13,6 +13,7 @@ class PlotResidualsBaseTestCase(PlotBaseTestCase):
             data=self.data,
             plot_configuration=self.plot_configuration,
             a=self.a,
+            output_path=self.output_path,
         )
 
     def test_error_bar(self):
@@ -63,9 +64,7 @@ class TestPlotResidualsWithLabelsAndTitle(TestCase, PlotResidualsBaseTestCase):
 
 class TestPlotResidualsExportToFile(TestCase, PlotResidualsBaseTestCase):
 
-    should_export = True
-    residuals_output_path = Path("/dir/to/output/linear_fitting_residuals.png")
-    output_file = "/dir/to/output/linear_fitting_residuals.png"
+    output_path = Path("/dir/to/output/linear_fitting_residuals.png")
 
     def setUp(self):
         PlotResidualsBaseTestCase.setUp(self)

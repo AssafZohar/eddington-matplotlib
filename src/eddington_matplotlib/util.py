@@ -32,9 +32,9 @@ def grid(is_grid):
         plt.grid(True)
 
 
-def show_or_export(output_file):
-    if output_file is not None:
-        plt.savefig(output_file)
-        plt.clf()
-    else:
+def show_or_export(output_path=None):
+    if output_path is None:
         plt.show()
+        return
+    plt.savefig(output_path)
+    plt.clf()

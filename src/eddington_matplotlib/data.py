@@ -7,8 +7,8 @@ from eddington_matplotlib.util import (
 )
 
 
-def plot_data(data, plot_configuration: PlotConfiguration):
+def plot_data(data, plot_configuration: PlotConfiguration, output_path=None):
     label_axes(xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel)
     grid(plot_configuration.grid)
     errorbar(x=data.x, y=data.y, xerr=data.xerr, yerr=data.yerr)
-    show_or_export(plot_configuration.data_output_path)
+    show_or_export(output_path=output_path)

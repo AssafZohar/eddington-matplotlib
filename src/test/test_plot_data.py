@@ -3,7 +3,7 @@ from unittest import TestCase
 import numpy as np
 
 from eddington_matplotlib import plot_data
-from test.plot_base_test_case import PlotBaseTestCase
+from test.base_test_cases import PlotBaseTestCase
 
 
 class PlotFittingBaseTestCase(PlotBaseTestCase):
@@ -13,7 +13,9 @@ class PlotFittingBaseTestCase(PlotBaseTestCase):
     def setUp(self):
         PlotBaseTestCase.setUp(self)
         plot_data(
-            data=self.data, plot_configuration=self.plot_configuration,
+            data=self.data,
+            plot_configuration=self.plot_configuration,
+            output_path=self.output_path,
         )
 
     def test_error_bar(self):
@@ -53,8 +55,7 @@ class TestPlotFittingWithBothLabels(TestCase, PlotFittingBaseTestCase):
 class TestPlotFittingExportToFile(TestCase, PlotFittingBaseTestCase):
 
     should_export = True
-    data_output_path = Path("/dir/to/output/linear_data.png")
-    output_file = "/dir/to/output/linear_data.png"
+    output_path = Path("/dir/to/output/linear_data.png")
 
     def setUp(self):
         PlotFittingBaseTestCase.setUp(self)

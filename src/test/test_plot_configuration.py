@@ -1,4 +1,3 @@
-from pathlib import Path
 from unittest import TestCase
 
 from eddington_matplotlib import PlotConfiguration
@@ -11,9 +10,6 @@ class PlotConfigurationBaseTestCase:
     xmax = 9.8
     func_name = "Func Name"
     grid = False
-    data_output_path = None
-    fitting_output_path = None
-    residuals_output_path = None
     xcolumn = xlabel = "x_column_example"
     ycolumn = ylabel = "y_column_example"
     title = "Func Name Fitting"
@@ -93,27 +89,6 @@ class PlotConfigurationBaseTestCase:
             msg="Residuals title is different than expected",
         )
 
-    def test_data_output_path(self):
-        self.assertEqual(
-            self.data_output_path,
-            self.plot_configuration.data_output_path,
-            msg="Data output path is different than expected",
-        )
-
-    def test_fitting_output_path(self):
-        self.assertEqual(
-            self.fitting_output_path,
-            self.plot_configuration.fitting_output_path,
-            msg="Fitting output path is different than expected",
-        )
-
-    def test_residuals_output_path(self):
-        self.assertEqual(
-            self.residuals_output_path,
-            self.plot_configuration.residuals_output_path,
-            msg="Residuals output path is different than expected",
-        )
-
     def test_grid(self):
         if self.grid:
             self.assertTrue(self.plot_configuration.grid, msg="Grid should be true")
@@ -175,17 +150,6 @@ class TestPlotConfigurationWithTitle(TestCase, PlotConfigurationBaseTestCase):
 class TestPlotConfigurationWithResidualsTitle(TestCase, PlotConfigurationBaseTestCase):
     residuals_title = "An Awesome Residuals Title"
     kwargs = PlotConfigurationBaseTestCase.build_kwargs(residuals_title=residuals_title)
-
-    def setUp(self):
-        PlotConfigurationBaseTestCase.setUp(self)
-
-
-class TestPlotConfigurationWithOutputDir(TestCase, PlotConfigurationBaseTestCase):
-    output_dir = Path("directory")
-    data_output_path = output_dir / "func_name_data.png"
-    fitting_output_path = output_dir / "func_name_fitting.png"
-    residuals_output_path = output_dir / "func_name_fitting_residuals.png"
-    kwargs = PlotConfigurationBaseTestCase.build_kwargs(output_dir=output_dir)
 
     def setUp(self):
         PlotConfigurationBaseTestCase.setUp(self)

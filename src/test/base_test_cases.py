@@ -1,6 +1,4 @@
 from collections import namedtuple
-from pathlib import Path
-
 import numpy as np
 from mock import patch
 
@@ -26,11 +24,8 @@ class PlotBaseTestCase:
     residuals_title = None
     expected_title = None
 
-    should_export = False
-    data_output_path = None
-    fitting_output_path = None
-    residuals_output_path = None
     grid = False
+    output_path = None
 
     xmin = -1
     xmax = 1
@@ -46,9 +41,6 @@ class PlotBaseTestCase:
             residuals_title=self.residuals_title,
             xmin=self.xmin,
             xmax=self.xmax,
-            data_output_path=self.data_output_path,
-            fitting_output_path=self.fitting_output_path,
-            residuals_output_path=self.residuals_output_path,
             grid=self.grid,
         )
 
@@ -134,11 +126,11 @@ class PlotBaseTestCase:
             self.plt.ylabel.assert_called_once_with(self.ylabel)
 
     def test_show_or_export(self):
-        if self.should_export:
-            self.plt.savefig.assert_called_once_with(Path(self.output_file))
-            self.plt.clf.assert_called_once_with()
-        else:
+        if self.output_path is None:
             self.plt.show.assert_called_once_with()
+        else:
+            self.plt.savefig.assert_called_once_with(self.output_path)
+            self.plt.clf.assert_called_once_with()
 
     def test_grid(self):
         if self.grid:

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 
 from eddington_matplotlib import PlotConfiguration
@@ -17,6 +19,7 @@ def plot_fitting(
     plot_configuration: PlotConfiguration,
     a: np.ndarray,
     step: float = None,
+    output_path: Path = None,
 ):
     title(plot_configuration.title)
     label_axes(xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel)
@@ -27,4 +30,4 @@ def plot_fitting(
     x = np.arange(plot_configuration.xmin, plot_configuration.xmax, step=step)
     y = func(a, x)
     plot(x, y)
-    show_or_export(plot_configuration.fitting_output_path)
+    show_or_export(output_path=output_path)
