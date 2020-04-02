@@ -24,7 +24,6 @@ class PlotConfiguration:
         ycolumn=None,
         xlabel=None,
         ylabel=None,
-        output_dir=None,
         **kwargs,
     ):
         title = cls.__get_title(func_name=func_name, title=title)

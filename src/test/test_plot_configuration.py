@@ -17,19 +17,12 @@ class PlotConfigurationBaseTestCase:
 
     @classmethod
     def build_kwargs(
-        cls,
-        xlabel=None,
-        ylabel=None,
-        title=None,
-        residuals_title=None,
-        output_dir=None,
-        grid=False,
+        cls, xlabel=None, ylabel=None, title=None, residuals_title=None, grid=False,
     ):
         kwargs = dict(
             xlabel=xlabel,
             ylabel=ylabel,
             title=title,
-            output_dir=output_dir,
             residuals_title=residuals_title,
             grid=grid,
         )
