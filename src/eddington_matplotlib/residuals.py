@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 from eddington_core import FitData
 
-from eddington_matplotlib import PlotConfiguration
+from eddington_matplotlib.plot_configuration import PlotConfiguration
 from eddington_matplotlib.util import (
     title,
     label_axes,

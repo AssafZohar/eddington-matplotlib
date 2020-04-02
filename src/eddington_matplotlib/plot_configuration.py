@@ -13,6 +13,9 @@ class PlotConfiguration:
     title: Union[str, None] = None
     residuals_title: Union[str, None] = None
     grid: bool = False
+    plot_fitting: bool = True
+    plot_residuals: bool = True
+    plot_data: bool = False
 
     @classmethod
     def build(
