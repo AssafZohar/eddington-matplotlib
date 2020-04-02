@@ -2,7 +2,7 @@ from pathlib import Path
 from unittest import TestCase
 import numpy as np
 
-from eddington.matplotlib.fitting import plot_fitting
+from eddington_matplotlib import plot_fitting
 from test.plot_base_test_case import PlotBaseTestCase
 
 

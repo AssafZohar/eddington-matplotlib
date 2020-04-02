@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 from mock import patch
 
-from eddington.matplotlib.configuration import PlotConfiguration
+from eddington_matplotlib import PlotConfiguration
 
 
 FitData = namedtuple("FitData", ["x", "y", "xerr", "yerr"])
@@ -36,7 +36,7 @@ class PlotBaseTestCase:
     xmax = 1
 
     def setUp(self):
-        plot_patcher = patch("eddington.matplotlib.util.plt")
+        plot_patcher = patch("eddington_matplotlib.util.plt")
         self.plt = plot_patcher.start()
         self.addCleanup(plot_patcher.stop)
         self.plot_configuration = PlotConfiguration(

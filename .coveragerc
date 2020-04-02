@@ -1,5 +1,5 @@
 [run]
-source = src/eddington
+source = src
 
 [report]
 show_missing = True

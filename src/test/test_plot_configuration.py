@@ -1,7 +1,7 @@
 from pathlib import Path
 from unittest import TestCase
 
-from eddington.matplotlib.configuration import PlotConfiguration
+from eddington_matplotlib import PlotConfiguration
 
 
 class PlotConfigurationBaseTestCase:

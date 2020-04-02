@@ -1,7 +1,7 @@
 import numpy as np
 
-from eddington.matplotlib.configuration import PlotConfiguration
-from eddington.matplotlib.util import (
+from eddington_matplotlib import PlotConfiguration
+from eddington_matplotlib.util import (
     title,
     label_axes,
     horizontal_line,

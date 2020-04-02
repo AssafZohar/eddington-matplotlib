@@ -1,7 +1,7 @@
 from pathlib import Path
 from unittest import TestCase
 
-from eddington.matplotlib.residuals import plot_residuals
+from eddington_matplotlib import plot_residuals
 from test.plot_base_test_case import PlotBaseTestCase
 
 
