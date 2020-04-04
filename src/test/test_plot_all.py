@@ -34,7 +34,7 @@ class PlotAllBaseTestCase:
             func_name=self.func.name, xmin=self.xmin, xmax=self.xmax, **self.kwargs
         )
         self.output_configuration = OutputConfiguration.build(
-            func_name=self.func.name, output_dir=self.output_dir
+            base_name=self.func.name, output_dir=self.output_dir
         )
 
         plot_all(
