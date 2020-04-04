@@ -1,4 +1,4 @@
-from eddington_core import FitData
+from eddington_core import FitData, FitResult
 
 from eddington_matplotlib.fitting import plot_fitting
 from eddington_matplotlib.residuals import plot_residuals
@@ -10,10 +10,12 @@ from eddington_matplotlib.data import plot_data
 def plot_all(
     func,
     data: FitData,
+    result: FitResult,
     plot_configuration: PlotConfiguration,
     output_configuration: OutputConfiguration,
-    a=None,
 ):
+    if plot_configuration.export_result:
+        result.export_to_file(output_configuration.result_output_path)
     if plot_configuration.plot_data:
         plot_data(
             data=data,
@@ -25,7 +27,7 @@ def plot_all(
             func=func,
             data=data,
             plot_configuration=plot_configuration,
-            a=a,
+            a=result.a,
             output_path=output_configuration.fitting_output_path,
         )
     if plot_configuration.plot_residuals:
@@ -33,6 +35,6 @@ def plot_all(
             func=func,
             data=data,
             plot_configuration=plot_configuration,
-            a=a,
+            a=result.a,
             output_path=output_configuration.residuals_output_path,
         )

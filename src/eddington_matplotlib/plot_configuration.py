@@ -13,6 +13,7 @@ class PlotConfiguration:
     title: Union[str, None] = None
     residuals_title: Union[str, None] = None
     grid: bool = False
+    export_result: bool = True
     plot_fitting: bool = True
     plot_residuals: bool = True
     plot_data: bool = False
