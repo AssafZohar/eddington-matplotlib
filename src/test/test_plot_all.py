@@ -33,7 +33,7 @@ class PlotAllBaseTestCase:
         self.addCleanup(plot_residuals_patcher.stop)
 
         self.plot_configuration = PlotConfiguration.build(
-            func_name=self.func.name, xmin=self.xmin, xmax=self.xmax, **self.kwargs
+            base_name=self.func.name, xmin=self.xmin, xmax=self.xmax, **self.kwargs
         )
         self.output_configuration = OutputConfiguration.build(
             base_name=self.func.name, output_dir=self.output_dir

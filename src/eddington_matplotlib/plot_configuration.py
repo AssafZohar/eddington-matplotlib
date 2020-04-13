@@ -21,7 +21,7 @@ class PlotConfiguration:
     @classmethod
     def build(
         cls,
-        func_name,
+        base_name,
         title=None,
         residuals_title=None,
         xcolumn=None,
@@ -30,7 +30,8 @@ class PlotConfiguration:
         ylabel=None,
         **kwargs,
     ):
-        title = cls.__get_title(func_name=func_name, title=title)
+        base_name = base_name.title().replace("_", " ")
+        title = cls.__get_title(base_name=base_name, title=title)
         residuals_title = cls.__get_residuals_title(
             title=title, residuals_title=residuals_title
         )
@@ -58,10 +59,10 @@ class PlotConfiguration:
         return header
 
     @classmethod
-    def __get_title(cls, func_name, title):
+    def __get_title(cls, base_name, title):
         if title is not None:
             return title
-        return f"{func_name} Fitting"
+        return f"{base_name} Fitting"
 
     @classmethod
     def __get_residuals_title(cls, residuals_title, title):

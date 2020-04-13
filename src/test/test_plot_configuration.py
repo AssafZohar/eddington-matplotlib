@@ -8,12 +8,12 @@ class PlotConfigurationBaseTestCase:
 
     xmin = 0.2
     xmax = 9.8
-    func_name = "Func Name"
+    base_name = "Base Name"
     grid = False
     xcolumn = xlabel = "x_column_example"
     ycolumn = ylabel = "y_column_example"
-    title = "Func Name Fitting"
-    residuals_title = "Func Name Fitting - Residuals"
+    title = "Base Name Fitting"
+    residuals_title = "Base Name Fitting - Residuals"
 
     @classmethod
     def build_kwargs(
@@ -30,7 +30,7 @@ class PlotConfigurationBaseTestCase:
 
     def setUp(self):
         self.plot_configuration = PlotConfiguration.build(
-            func_name=self.func_name,
+            base_name=self.base_name,
             xmin=self.xmin,
             xmax=self.xmax,
             xcolumn=self.xcolumn,
