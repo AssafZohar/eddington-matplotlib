@@ -1,5 +1,6 @@
 [run]
 source = src
+omit = src/eddington_matplotlib/__main__.py
 
 [report]
 show_missing = True
