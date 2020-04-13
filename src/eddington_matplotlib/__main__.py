@@ -12,7 +12,8 @@ parser.add_argument("-i", "--input", type=Path, help="Input file to plot from")
 
 def main():
     args = parser.parse_args()
-    with open(args.input, mode="r") as json_file:
+    input_path = args.input
+    with open(input_path, mode="r") as json_file:
         json_obj = json.load(json_file)
     func = FitFunctionsRegistry.load(
         json_obj["fit_function"], *json_obj.get("parameters", [])
@@ -21,7 +22,12 @@ def main():
     data = FitData(**json_data)
     result = FitResult(**json_obj["result"])
     xmin, xmax = PlotConfiguration.get_plot_borders(data.x)
-    plot_configuration = PlotConfiguration(xmin, xmax, export_result=False)
+    plot_configuration = PlotConfiguration.build(
+        base_name=input_path.stem,
+        xmin=xmin,
+        xmax=xmax,
+        export_result=False,
+    )
     output_configuration = OutputConfiguration()
     plot_all(
         func=func,
