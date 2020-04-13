@@ -35,7 +35,7 @@ class PlotFittingBaseTestCase(PlotBaseTestCase):
             msg="Plot arguments count is different than expected",
         )
         self.assertEqual(
-            0,
+            1,
             len(self.plt.plot.call_args_list[0].kwargs),
             msg="Plot keyword arguments count is different than expected",
         )

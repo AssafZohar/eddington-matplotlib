@@ -1,40 +1,50 @@
 import matplotlib.pyplot as plt
 
 
-def plot(x, y):
-    plt.plot(x, y)
+def get_figure():
+    return plt.figure()
+
+
+def plot(x, y, fig):
+    plt.plot(x, y, figure=fig)
 
 
 def horizontal_line(xmin, xmax, y=0):
     plt.hlines(y, xmin=xmin, xmax=xmax, linestyles="dashed")
 
 
-def errorbar(x, y, xerr, yerr):
+def errorbar(x, y, xerr, yerr, fig):
     plt.errorbar(
-        x=x, y=y, xerr=xerr, yerr=yerr, markersize=1, marker="o", linestyle="None"
+        x=x,
+        y=y,
+        xerr=xerr,
+        yerr=yerr,
+        markersize=1,
+        marker="o",
+        linestyle="None",
+        figure=fig,
     )
 
 
-def title(title_name):
+def title(title_name, fig):
     if title_name is not None:
-        plt.title(title_name)
+        fig.title(title_name)
 
 
-def label_axes(xlabel, ylabel):
+def label_axes(xlabel, ylabel, fig):
     if xlabel is not None:
-        plt.xlabel(xlabel)
+        fig.xlabel(xlabel)
     if ylabel is not None:
-        plt.ylabel(ylabel)
+        fig.ylabel(ylabel)
 
 
-def grid(is_grid):
+def grid(is_grid, fig):
     if is_grid:
-        plt.grid(True)
+        fig.grid(True)
 
 
-def show_or_export(output_path=None):
+def show_or_export(fig: plt.Figure, output_path=None):
     if output_path is None:
         plt.show()
         return
-    plt.savefig(output_path)
-    plt.clf()
+    fig.savefig(output_path)

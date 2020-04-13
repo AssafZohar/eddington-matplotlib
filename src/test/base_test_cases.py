@@ -33,7 +33,10 @@ class PlotBaseTestCase:
     def setUp(self):
         plot_patcher = patch("eddington_matplotlib.util.plt")
         self.plt = plot_patcher.start()
+        self.figure = self.plt.figure.return_value
+
         self.addCleanup(plot_patcher.stop)
+
         self.plot_configuration = PlotConfiguration(
             xlabel=self.xlabel,
             ylabel=self.ylabel,
@@ -60,7 +63,7 @@ class PlotBaseTestCase:
             msg="errorbar arguments number is different than expected",
         )
         self.assertEqual(
-            7,
+            8,
             len(self.plt.errorbar.call_args_list[0].kwargs),
             msg="errorbar keyword arguments number is different than expected",
         )
@@ -106,34 +109,35 @@ class PlotBaseTestCase:
 
     def test_title(self):
         if self.title is None and self.residuals_title is None:
-            self.plt.title.assert_not_called()
+            self.figure.title.assert_not_called()
             return
         if self.title is not None:
-            self.plt.title.assert_called_once_with(self.title)
+            self.figure.title.assert_called_once_with(self.title)
         if self.residuals_title is not None:
-            self.plt.title.assert_called_once_with(self.residuals_title)
+            self.figure.title.assert_called_once_with(self.residuals_title)
 
     def test_xlabel(self):
         if self.xlabel is None:
-            self.plt.xlabel.assert_not_called()
+            self.figure.xlabel.assert_not_called()
         else:
-            self.plt.xlabel.assert_called_once_with(self.xlabel)
+            self.figure.xlabel.assert_called_once_with(self.xlabel)
 
     def test_ylabel(self):
         if self.ylabel is None:
-            self.plt.ylabel.assert_not_called()
+            self.figure.ylabel.assert_not_called()
         else:
-            self.plt.ylabel.assert_called_once_with(self.ylabel)
+            self.figure.ylabel.assert_called_once_with(self.ylabel)
 
     def test_show_or_export(self):
         if self.output_path is None:
             self.plt.show.assert_called_once_with()
+            self.figure.savefig.assert_not_called()
         else:
-            self.plt.savefig.assert_called_once_with(self.output_path)
-            self.plt.clf.assert_called_once_with()
+            self.plt.show.assert_not_called()
+            self.figure.savefig.assert_called_once_with(self.output_path)
 
     def test_grid(self):
         if self.grid:
-            self.plt.grid.assert_called_with(True)
+            self.figure.grid.assert_called_with(True)
         else:
-            self.plt.grid.assert_not_called()
+            self.figure.grid.assert_not_called()

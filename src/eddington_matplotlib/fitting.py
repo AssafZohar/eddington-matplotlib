@@ -4,6 +4,7 @@ from eddington_core import FitData
 
 from eddington_matplotlib.plot_configuration import PlotConfiguration
 from eddington_matplotlib.util import (
+    get_figure,
     title,
     label_axes,
     errorbar,
@@ -21,13 +22,16 @@ def plot_fitting(
     step: float = None,
     output_path: Path = None,
 ):
-    title(plot_configuration.title)
-    label_axes(xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel)
-    grid(plot_configuration.grid)
-    errorbar(x=data.x, y=data.y, xerr=data.xerr, yerr=data.yerr)
+    fig = get_figure()
+    title(plot_configuration.title, fig=fig)
+    label_axes(
+        xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel, fig=fig
+    )
+    grid(plot_configuration.grid, fig=fig)
+    errorbar(x=data.x, y=data.y, xerr=data.xerr, yerr=data.yerr, fig=fig)
     if step is None:
         step = (plot_configuration.xmax - plot_configuration.xmin) / 1000.0
     x = np.arange(plot_configuration.xmin, plot_configuration.xmax, step=step)
     y = func(a, x)
-    plot(x, y)
-    show_or_export(output_path=output_path)
+    plot(x, y, fig=fig)
+    show_or_export(output_path=output_path, fig=fig)
