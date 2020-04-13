@@ -33,9 +33,9 @@ def title(title_name, fig):
 
 def label_axes(xlabel, ylabel, fig):
     if xlabel is not None:
-        fig.xlabel(xlabel)
+        plt.xlabel(xlabel, figure=fig)
     if ylabel is not None:
-        fig.ylabel(ylabel)
+        plt.ylabel(ylabel, figure=fig)
 
 
 def grid(is_grid, fig):

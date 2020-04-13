@@ -23,7 +23,12 @@ def main():
     result = FitResult(**json_obj["result"])
     xmin, xmax = PlotConfiguration.get_plot_borders(data.x)
     plot_configuration = PlotConfiguration.build(
-        base_name=input_path.stem, xmin=xmin, xmax=xmax, export_result=False,
+        base_name=input_path.stem,
+        xmin=xmin,
+        xmax=xmax,
+        xlabel="x",
+        ylabel="y",
+        export_result=False,
     )
     output_configuration = OutputConfiguration()
     plot_all(

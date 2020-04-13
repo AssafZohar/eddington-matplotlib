@@ -127,15 +127,15 @@ class PlotBaseTestCase:
 
     def test_xlabel(self):
         if self.xlabel is None:
-            self.figure.xlabel.assert_not_called()
+            self.plt.xlabel.assert_not_called()
         else:
-            self.figure.xlabel.assert_called_once_with(self.xlabel)
+            self.plt.xlabel.assert_called_once_with(self.xlabel, figure=self.figure)
 
     def test_ylabel(self):
         if self.ylabel is None:
-            self.figure.ylabel.assert_not_called()
+            self.plt.ylabel.assert_not_called()
         else:
-            self.figure.ylabel.assert_called_once_with(self.ylabel)
+            self.plt.ylabel.assert_called_once_with(self.ylabel, figure=self.figure)
 
     def test_show_or_export(self):
         if self.output_path is None:
