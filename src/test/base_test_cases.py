@@ -109,12 +109,14 @@ class PlotBaseTestCase:
 
     def test_title(self):
         if self.title is None and self.residuals_title is None:
-            self.figure.title.assert_not_called()
+            self.plt.title.assert_not_called()
             return
         if self.title is not None:
-            self.figure.title.assert_called_once_with(self.title)
+            self.plt.title.assert_called_once_with(self.title, figure=self.figure)
         if self.residuals_title is not None:
-            self.figure.title.assert_called_once_with(self.residuals_title)
+            self.plt.title.assert_called_once_with(
+                self.residuals_title, figure=self.figure
+            )
 
     def test_xlabel(self):
         if self.xlabel is None:

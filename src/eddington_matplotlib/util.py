@@ -28,7 +28,7 @@ def errorbar(x, y, xerr, yerr, fig):
 
 def title(title_name, fig):
     if title_name is not None:
-        fig.title(title_name)
+        plt.title(title_name, figure=fig)
 
 
 def label_axes(xlabel, ylabel, fig):
