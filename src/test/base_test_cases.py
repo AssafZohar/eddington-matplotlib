@@ -147,6 +147,6 @@ class PlotBaseTestCase:
 
     def test_grid(self):
         if self.grid:
-            self.figure.grid.assert_called_with(True)
+            self.plt.grid.assert_called_with(True, figure=self.figure)
         else:
-            self.figure.grid.assert_not_called()
+            self.plt.grid.assert_not_called()

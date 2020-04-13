@@ -8,6 +8,9 @@ from eddington_matplotlib import PlotConfiguration, OutputConfiguration, plot_al
 
 parser = ArgumentParser(description="Plot data and results from file")
 parser.add_argument("-i", "--input", type=Path, help="Input file to plot from")
+parser.add_argument(
+    "-g", "--grid", default=False, action="store_true", help="Add grid to plot"
+)
 
 
 def main():
@@ -29,6 +32,7 @@ def main():
         xlabel="x",
         ylabel="y",
         export_result=False,
+        grid=args.grid,
     )
     output_configuration = OutputConfiguration()
     plot_all(

@@ -40,7 +40,7 @@ def label_axes(xlabel, ylabel, fig):
 
 def grid(is_grid, fig):
     if is_grid:
-        fig.grid(True)
+        plt.grid(True, figure=fig)
 
 
 def show_or_export(fig: plt.Figure, output_path=None):
