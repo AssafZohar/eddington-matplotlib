@@ -1,0 +1,36 @@
+from argparse import ArgumentParser
+from pathlib import Path
+import json
+import numpy as np
+
+from eddington_core import FitData, FitFunctionsRegistry, FitResult
+from eddington_matplotlib import PlotConfiguration, OutputConfiguration, plot_all
+
+parser = ArgumentParser(description="Plot data and results from file")
+parser.add_argument("-i", "--input", type=Path, help="Input file to plot from")
+
+
+def main():
+    args = parser.parse_args()
+    with open(args.input, mode="r") as json_file:
+        json_obj = json.load(json_file)
+    func = FitFunctionsRegistry.load(
+        json_obj["fit_function"], *json_obj.get("parameters", [])
+    )
+    json_data = {key: np.array(value) for key, value in json_obj["data"].items()}
+    data = FitData(**json_data)
+    result = FitResult(**json_obj["result"])
+    xmin, xmax = PlotConfiguration.get_plot_borders(data.x)
+    plot_configuration = PlotConfiguration(xmin, xmax, export_result=False)
+    output_configuration = OutputConfiguration()
+    plot_all(
+        func=func,
+        data=data,
+        result=result,
+        plot_configuration=plot_configuration,
+        output_configuration=output_configuration,
+    )
+
+
+if __name__ == "__main__":
+    main()
