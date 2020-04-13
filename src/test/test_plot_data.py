@@ -6,7 +6,7 @@ from eddington_matplotlib import plot_data
 from test.base_test_cases import PlotBaseTestCase
 
 
-class PlotFittingBaseTestCase(PlotBaseTestCase):
+class PlotDataBaseTestCase(PlotBaseTestCase):
     xrange = np.arange(PlotBaseTestCase.xmin, PlotBaseTestCase.xmax, step=0.002)
     yrange = PlotBaseTestCase.a[0] + PlotBaseTestCase.a[1] * xrange
 
@@ -22,47 +22,54 @@ class PlotFittingBaseTestCase(PlotBaseTestCase):
         self.check_error_bar(y=self.data.y)
 
 
-class TestPlotFittingWithoutLabelsAndTitle(TestCase, PlotFittingBaseTestCase):
+class TestPlotDataWithoutLabelsAndTitle(TestCase, PlotDataBaseTestCase):
     def setUp(self):
-        PlotFittingBaseTestCase.setUp(self)
+        PlotDataBaseTestCase.setUp(self)
 
 
-class TestPlotFittingWithXlabel(TestCase, PlotFittingBaseTestCase):
+class TestPlotDataWithXlabel(TestCase, PlotDataBaseTestCase):
 
     xlabel = "xlabel"
 
     def setUp(self):
-        PlotFittingBaseTestCase.setUp(self)
+        PlotDataBaseTestCase.setUp(self)
 
 
-class TestPlotFittingWithYlabel(TestCase, PlotFittingBaseTestCase):
+class TestPlotDataWithYlabel(TestCase, PlotDataBaseTestCase):
 
     ylabel = "ylabel"
 
     def setUp(self):
-        PlotFittingBaseTestCase.setUp(self)
+        PlotDataBaseTestCase.setUp(self)
 
 
-class TestPlotFittingWithBothLabels(TestCase, PlotFittingBaseTestCase):
+class TestPlotDataWithBothLabels(TestCase, PlotDataBaseTestCase):
 
     xlabel = "xlabel"
     ylabel = "ylabel"
 
     def setUp(self):
-        PlotFittingBaseTestCase.setUp(self)
+        PlotDataBaseTestCase.setUp(self)
 
 
-class TestPlotFittingExportToFile(TestCase, PlotFittingBaseTestCase):
+class TestPlotDataExportToFile(TestCase, PlotDataBaseTestCase):
 
     should_export = True
     output_path = Path("/dir/to/output/linear_data.png")
 
     def setUp(self):
-        PlotFittingBaseTestCase.setUp(self)
+        PlotDataBaseTestCase.setUp(self)
 
 
-class TestPlotFittingWithGrid(TestCase, PlotFittingBaseTestCase):
+class TestPlotDataWithGrid(TestCase, PlotDataBaseTestCase):
     grid = True
 
     def setUp(self):
-        PlotFittingBaseTestCase.setUp(self)
+        PlotDataBaseTestCase.setUp(self)
+
+
+class TestPlotDataWithTitle(TestCase, PlotDataBaseTestCase):
+    data_title = "Data Title"
+
+    def setUp(self):
+        PlotDataBaseTestCase.setUp(self)

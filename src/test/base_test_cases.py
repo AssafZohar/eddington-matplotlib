@@ -1,6 +1,6 @@
 from collections import namedtuple
 import numpy as np
-from mock import patch
+from mock import patch, call
 
 from eddington_matplotlib import PlotConfiguration
 
@@ -21,6 +21,7 @@ class PlotBaseTestCase:
     xlabel = None
     ylabel = None
     title = None
+    data_title = None
     residuals_title = None
     expected_title = None
 
@@ -40,6 +41,7 @@ class PlotBaseTestCase:
         self.plot_configuration = PlotConfiguration(
             xlabel=self.xlabel,
             ylabel=self.ylabel,
+            data_title=self.data_title,
             title=self.title,
             residuals_title=self.residuals_title,
             xmin=self.xmin,
@@ -108,14 +110,19 @@ class PlotBaseTestCase:
         )
 
     def test_title(self):
-        if self.title is None and self.residuals_title is None:
+        titles = [
+            title
+            for title in [self.data_title, self.title, self.residuals_title]
+            if title is not None
+        ]
+        if len(titles) == 0:
             self.plt.title.assert_not_called()
             return
-        if self.title is not None:
-            self.plt.title.assert_called_once_with(self.title, figure=self.figure)
-        if self.residuals_title is not None:
-            self.plt.title.assert_called_once_with(
-                self.residuals_title, figure=self.figure
+        for i, title in enumerate(titles):
+            self.assertEqual(
+                call(title, figure=self.figure),
+                self.plt.title.call_args_list[i],
+                msg=f"Title call number {i} is different than expected",
             )
 
     def test_xlabel(self):

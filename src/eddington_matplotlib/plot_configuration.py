@@ -11,6 +11,7 @@ class PlotConfiguration:
     xlabel: Union[str, None] = None
     ylabel: Union[str, None] = None
     title: Union[str, None] = None
+    data_title: Union[str, None] = None
     residuals_title: Union[str, None] = None
     grid: bool = False
     export_result: bool = True
@@ -23,6 +24,7 @@ class PlotConfiguration:
         cls,
         base_name,
         title=None,
+        data_title=None,
         residuals_title=None,
         xcolumn=None,
         ycolumn=None,
@@ -32,6 +34,7 @@ class PlotConfiguration:
     ):
         base_name = base_name.title().replace("_", " ")
         title = cls.__get_title(base_name=base_name, title=title)
+        data_title = cls.__get_data_title(title=title, data_title=data_title)
         residuals_title = cls.__get_residuals_title(
             title=title, residuals_title=residuals_title
         )
@@ -39,6 +42,7 @@ class PlotConfiguration:
             xlabel=cls.__get_label(xcolumn, xlabel),
             ylabel=cls.__get_label(ycolumn, ylabel),
             title=title,
+            data_title=data_title,
             residuals_title=residuals_title,
             **kwargs,
         )
@@ -63,6 +67,12 @@ class PlotConfiguration:
         if title is not None:
             return title
         return f"{base_name} Fitting"
+
+    @classmethod
+    def __get_data_title(cls, data_title, title):
+        if data_title is not None:
+            return data_title
+        return f"{title} - Data"
 
     @classmethod
     def __get_residuals_title(cls, residuals_title, title):

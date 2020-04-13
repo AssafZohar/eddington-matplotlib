@@ -7,11 +7,13 @@ from eddington_matplotlib.util import (
     errorbar,
     show_or_export,
     grid,
+    title,
 )
 
 
 def plot_data(data: FitData, plot_configuration: PlotConfiguration, output_path=None):
     fig = get_figure()
+    title(plot_configuration.data_title, fig=fig)
     label_axes(
         xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel, fig=fig
     )

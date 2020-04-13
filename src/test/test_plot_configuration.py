@@ -17,13 +17,20 @@ class PlotConfigurationBaseTestCase:
 
     @classmethod
     def build_kwargs(
-        cls, xlabel=None, ylabel=None, title=None, residuals_title=None, grid=False,
+        cls,
+        xlabel=None,
+        ylabel=None,
+        title=None,
+        residuals_title=None,
+        data_title=None,
+        grid=False,
     ):
         kwargs = dict(
             xlabel=xlabel,
             ylabel=ylabel,
             title=title,
             residuals_title=residuals_title,
+            data_title=data_title,
             grid=grid,
         )
         return kwargs
@@ -143,6 +150,14 @@ class TestPlotConfigurationWithTitle(TestCase, PlotConfigurationBaseTestCase):
 class TestPlotConfigurationWithResidualsTitle(TestCase, PlotConfigurationBaseTestCase):
     residuals_title = "An Awesome Residuals Title"
     kwargs = PlotConfigurationBaseTestCase.build_kwargs(residuals_title=residuals_title)
+
+    def setUp(self):
+        PlotConfigurationBaseTestCase.setUp(self)
+
+
+class TestPlotConfigurationWithDataTitle(TestCase, PlotConfigurationBaseTestCase):
+    data_title = "An Awesome Data Title"
+    kwargs = PlotConfigurationBaseTestCase.build_kwargs(data_title=data_title)
 
     def setUp(self):
         PlotConfigurationBaseTestCase.setUp(self)
