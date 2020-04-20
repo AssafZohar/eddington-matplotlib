@@ -1,11 +1,13 @@
-from collections import namedtuple
 import numpy as np
 from mock import patch, call
 
+from eddington_core import FitData, fit_function
 from eddington_matplotlib import PlotConfiguration
 
 
-FitData = namedtuple("FitData", ["x", "y", "xerr", "yerr"])
+@fit_function(n=2, save=False)
+def dummy_func(a, x):
+    return a[0] + a[1] * x
 
 
 class PlotBaseTestCase:
@@ -13,11 +15,7 @@ class PlotBaseTestCase:
     decimal = 5
 
     a = np.array([1.1, 1.92])
-    x = np.arange(1, 10)
-    xerr = np.random.normal()
-    yerr = np.random.normal()
-    y = 1 + 2 * (x + xerr) + yerr
-    data = FitData(x=x, y=y, xerr=xerr, yerr=yerr)
+    data = FitData.random(dummy_func)
     xlabel = None
     ylabel = None
     title = None
@@ -70,7 +68,7 @@ class PlotBaseTestCase:
             msg="errorbar keyword arguments number is different than expected",
         )
         np.testing.assert_almost_equal(
-            self.x,
+            self.data.x,
             self.plt.errorbar.call_args_list[0].kwargs["x"],
             decimal=self.decimal,
             err_msg="X is different than expected",
@@ -82,13 +80,13 @@ class PlotBaseTestCase:
             err_msg="Y is different than expected",
         )
         np.testing.assert_almost_equal(
-            self.xerr,
+            self.data.xerr,
             self.plt.errorbar.call_args_list[0].kwargs["xerr"],
             decimal=self.decimal,
             err_msg="X error is different than expected",
         )
         np.testing.assert_almost_equal(
-            self.yerr,
+            self.data.yerr,
             self.plt.errorbar.call_args_list[0].kwargs["yerr"],
             decimal=self.decimal,
             err_msg="Y error is different than expected",

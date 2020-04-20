@@ -1,16 +1,10 @@
 from pathlib import Path
 from unittest import TestCase
 from mock import patch, Mock
-from eddington_core import fit_function
 import numpy as np
 
-from eddington_matplotlib import PlotConfiguration, OutputConfiguration
-from eddington_matplotlib import plot_all
-
-
-@fit_function(n=2, save=False)
-def dummy_func(a, x):
-    return a[0] + a[1] * x
+from eddington_matplotlib import PlotConfiguration, OutputConfiguration, plot_all
+from test.base_test_cases import dummy_func
 
 
 class PlotAllBaseTestCase:

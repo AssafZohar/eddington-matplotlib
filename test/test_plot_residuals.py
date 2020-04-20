@@ -17,7 +17,7 @@ class PlotResidualsBaseTestCase(PlotBaseTestCase):
         )
 
     def test_error_bar(self):
-        self.check_error_bar(y=self.y - self.func(self.a, self.x))
+        self.check_error_bar(y=self.data.y - self.func(self.a, self.data.x))
 
     def test_horizontal_line(self):
         self.plt.hlines(0, xmin=self.xmin, xmax=self.xmax, linestyles="dashed")
