@@ -1,11 +1,16 @@
 from pathlib import Path
 from unittest import TestCase
 from mock import patch, Mock
-from eddington_core import linear
+from eddington_core import fit_function
 import numpy as np
 
 from eddington_matplotlib import PlotConfiguration, OutputConfiguration
 from eddington_matplotlib import plot_all
+
+
+@fit_function(n=2, save=False)
+def dummy_func(a, x):
+    return a[0] + a[1] * x
 
 
 class PlotAllBaseTestCase:
@@ -13,7 +18,7 @@ class PlotAllBaseTestCase:
     data = "data"
     xmin = 0.2
     xmax = 9.8
-    func = linear
+    func = dummy_func
     output_dir = Path("dir/to/output")
 
     def setUp(self):
