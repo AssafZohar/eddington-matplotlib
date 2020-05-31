@@ -1,3 +1,4 @@
+from typing import Union
 from unittest import TestCase
 
 from eddington_matplotlib import PlotConfiguration
@@ -10,8 +11,10 @@ class PlotConfigurationBaseTestCase:
     xmax = 9.8
     base_name = "Base Name"
     grid = False
-    xcolumn = xlabel = "x_column_example"
-    ycolumn = ylabel = "y_column_example"
+    xcolumn: Union[str, float, None] = "x_column_example"
+    xlabel: Union[str, float, None] = xcolumn
+    ycolumn: Union[str, float, None] = "y_column_example"
+    ylabel: Union[str, float, None] = ycolumn
     title = "Base Name Fitting"
     residuals_title = "Base Name Fitting - Residuals"
 

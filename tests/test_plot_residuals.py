@@ -2,7 +2,7 @@ from pathlib import Path
 from unittest import TestCase
 
 from eddington_matplotlib import plot_residuals
-from test.base_test_cases import PlotBaseTestCase
+from tests.base_test_cases import PlotBaseTestCase
 
 
 class PlotResidualsBaseTestCase(PlotBaseTestCase):

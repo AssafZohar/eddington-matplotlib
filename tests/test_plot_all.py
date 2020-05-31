@@ -1,10 +1,11 @@
 from pathlib import Path
+from typing import Dict
 from unittest import TestCase
 from mock import patch, Mock
 import numpy as np
 
 from eddington_matplotlib import PlotConfiguration, OutputConfiguration, plot_all
-from test.base_test_cases import dummy_func
+from tests.base_test_cases import dummy_func
 
 
 class PlotAllBaseTestCase:
@@ -90,7 +91,7 @@ class PlotAllBaseTestCase:
 
 
 class TestPlotAllDefault(TestCase, PlotAllBaseTestCase):
-    kwargs = dict()
+    kwargs: Dict = dict()
 
     should_export_result = True
     should_plot_fitting = True

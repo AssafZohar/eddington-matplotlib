@@ -1,3 +1,6 @@
+from pathlib import Path
+from typing import Optional
+
 import numpy as np
 from mock import patch, call
 
@@ -16,15 +19,15 @@ class PlotBaseTestCase:
 
     a = np.array([1.1, 1.92])
     data = FitData.random(dummy_func)
-    xlabel = None
-    ylabel = None
-    title = None
-    data_title = None
-    residuals_title = None
-    expected_title = None
+    xlabel: Optional[str] = None
+    ylabel: Optional[str] = None
+    title: Optional[str] = None
+    data_title: Optional[str] = None
+    residuals_title: Optional[str] = None
+    expected_title: Optional[str] = None
 
     grid = False
-    output_path = None
+    output_path: Optional[Path] = None
 
     xmin = -1
     xmax = 1

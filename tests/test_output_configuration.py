@@ -1,10 +1,10 @@
 from pathlib import Path
-from unittest import TestCase
 
 from eddington_matplotlib import OutputConfiguration
+from eddington_test import MetaTestCase
 
 
-class OutputConfigurationBaseTestCase:
+class OutputConfigurationBaseTestCase(MetaTestCase):
     func_name = "func_name"
     result_output_path = None
     data_output_path = None
@@ -46,23 +46,14 @@ class OutputConfigurationBaseTestCase:
 
 
 class TestOutputConfigurationWithoutOutputDir(
-    TestCase, OutputConfigurationBaseTestCase
+    metaclass=OutputConfigurationBaseTestCase
 ):
     output_dir = None
-    data_output_path = None
-    fitting_output_path = None
-    residuals_output_path = None
-
-    def setUp(self):
-        OutputConfigurationBaseTestCase.setUp(self)
 
 
-class TestOutputConfigurationWithOutputDir(TestCase, OutputConfigurationBaseTestCase):
+class TestOutputConfigurationWithOutputDir(metaclass=OutputConfigurationBaseTestCase):
     output_dir = Path("directory")
     result_output_path = output_dir / "func_name_fitting_result.txt"
     data_output_path = output_dir / "func_name_data.png"
     fitting_output_path = output_dir / "func_name_fitting.png"
     residuals_output_path = output_dir / "func_name_fitting_residuals.png"
-
-    def setUp(self):
-        OutputConfigurationBaseTestCase.setUp(self)
