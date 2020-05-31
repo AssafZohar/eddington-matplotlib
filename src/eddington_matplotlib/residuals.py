@@ -1,3 +1,4 @@
+"""Plot residuals of a fitting."""
 from pathlib import Path
 
 import numpy as np
@@ -22,6 +23,15 @@ def plot_residuals(
     a: np.ndarray,
     output_path: Path = None,
 ):
+    """
+    Plot residuals plot.
+
+    :param func: Fitting function.
+    :param data: Fitting data
+    :param plot_configuration: Plot configuration
+    :param a: The parameters result
+    :param output_path: Path or None. output path to save the plot.
+    """
     fig = get_figure()
     title(plot_configuration.residuals_title, fig=fig)
     label_axes(

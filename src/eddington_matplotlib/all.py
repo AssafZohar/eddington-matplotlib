@@ -1,3 +1,4 @@
+"""Plot all desired plot."""
 from eddington_core import FitData, FitResult
 
 from eddington_matplotlib.fitting import plot_fitting
@@ -14,6 +15,16 @@ def plot_all(
     plot_configuration: PlotConfiguration,
     output_configuration: OutputConfiguration,
 ):
+    """
+    Plot all desired plot.
+
+    :param func: Fitting function.
+    :param data: Fitting data.
+    :param result: Fitting result.
+    :param plot_configuration: Plot configuration.
+    :param output_configuration: :class:`OutputConfiguration` instance indicates
+     where and whether to save plot to file.
+    """
     if plot_configuration.export_result:
         result.export_to_file(output_configuration.result_output_path)
     if plot_configuration.plot_data:

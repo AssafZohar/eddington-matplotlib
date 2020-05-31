@@ -1,3 +1,4 @@
+"""Plot fitting result."""
 from pathlib import Path
 import numpy as np
 from eddington_core import FitData
@@ -22,6 +23,16 @@ def plot_fitting(
     step: float = None,
     output_path: Path = None,
 ):
+    """
+    Plot fitting plot.
+
+    :param func: Fitting function.
+    :param data: Fitting data
+    :param plot_configuration: Plot configuration
+    :param a: The parameters result
+    :param step: float or None. step between values of the continuous plot
+    :param output_path: Path or None. output path to save the plot.
+    """
     fig = get_figure()
     title(plot_configuration.title, fig=fig)
     label_axes(

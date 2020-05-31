@@ -1,3 +1,4 @@
+"""Plot fitting data."""
 from eddington_core import FitData
 
 from eddington_matplotlib.plot_configuration import PlotConfiguration
@@ -12,6 +13,13 @@ from eddington_matplotlib.util import (
 
 
 def plot_data(data: FitData, plot_configuration: PlotConfiguration, output_path=None):
+    """
+    Plot fitting data.
+
+    :param data: Fitting data
+    :param plot_configuration: Plot configuration
+    :param output_path: Path or None. output path to save the plot.
+    """
     fig = get_figure()
     title(plot_configuration.data_title, fig=fig)
     label_axes(

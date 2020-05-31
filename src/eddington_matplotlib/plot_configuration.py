@@ -1,3 +1,4 @@
+"""Configuration for the fitting results."""
 from typing import Union
 from dataclasses import dataclass
 import numpy as np
@@ -6,6 +7,8 @@ from numbers import Number
 
 @dataclass
 class PlotConfiguration:
+    """Data class for plotting fitting results."""
+
     xmin: float
     xmax: float
     xlabel: Union[str, None] = None
@@ -32,6 +35,21 @@ class PlotConfiguration:
         ylabel=None,
         **kwargs,
     ):
+        """
+        Build a :class:`PlotConfiguration` instance.
+
+        :param base_name: str. Base name that titles will be generated from if not
+         specified.
+        :param title: str or None. Title for the fitting plot.
+        :param data_title: str or None. Title for the data plot.
+        :param residuals_title: str or None. Title for the residuals plot.
+        :param xcolumn: str, int or None. x column specifier
+        :param ycolumn: str, int or None. x column specifier
+        :param xlabel: str or None. Label for the x axis.
+        :param ylabel: str or None. Label for the y axis.
+        :param kwargs: dict. Extra arguments.
+        :return: :class:`PlotConfiguration` instance
+        """
         base_name = base_name.title().replace("_", " ")
         title = cls.__get_title(base_name=base_name, title=title)
         data_title = cls.__get_data_title(title=title, data_title=data_title)
@@ -49,6 +67,12 @@ class PlotConfiguration:
 
     @classmethod
     def get_plot_borders(cls, x):
+        """
+        Get borders for a plot based on its x values.
+
+        :param x: Array. x values of the fitting
+        :return: tuple. minimum and maximum values for the plot.
+        """
         xmin = np.min(x)
         xmax = np.max(x)
         gap = (xmax - xmin) * 0.1

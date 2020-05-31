@@ -1,3 +1,4 @@
+"""Library for plotting fitting data and results."""
 from eddington_matplotlib.all import plot_all
 from eddington_matplotlib.plot_configuration import PlotConfiguration
 from eddington_matplotlib.output_configuration import OutputConfiguration

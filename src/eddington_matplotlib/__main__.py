@@ -1,3 +1,4 @@
+"""Main module to plot fitting data."""
 from argparse import ArgumentParser
 from pathlib import Path
 import json
@@ -14,6 +15,11 @@ parser.add_argument(
 
 
 def main():
+    """
+    Main method to plot data from json file.
+    
+    Examples for json datafiles can be seen in the "examples" directory.
+    """
     args = parser.parse_args()
     input_path = args.input
     with open(input_path, mode="r") as json_file:
