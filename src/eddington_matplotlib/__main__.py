@@ -18,11 +18,13 @@ def main():
     input_path = args.input
     with open(input_path, mode="r") as json_file:
         json_obj = json.load(json_file)
-    func = FitFunctionsRegistry.load(
-        json_obj["fit_function"], *json_obj.get("parameters", [])
-    )
+    func = FitFunctionsRegistry.load(json_obj["fit_function"])
+    fix = json_obj.get("fix", None)
+    if fix is not None:
+        for index, value in fix:
+            func.fix(index, value)
     json_data = {key: np.array(value) for key, value in json_obj["data"].items()}
-    data = FitData(**json_data)
+    data = FitData(data=json_data)
     result = FitResult(**json_obj["result"])
     xmin, xmax = PlotConfiguration.get_plot_borders(data.x)
     plot_configuration = PlotConfiguration.build(
@@ -42,6 +44,7 @@ def main():
         plot_configuration=plot_configuration,
         output_configuration=output_configuration,
     )
+    func.clear_fixed()
 
 
 if __name__ == "__main__":
