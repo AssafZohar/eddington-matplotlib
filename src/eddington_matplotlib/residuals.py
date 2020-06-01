@@ -13,7 +13,7 @@ from eddington_matplotlib.util import (
 )
 
 
-def plot_residuals(
+def plot_residuals(  # pylint: disable=C0103
     func,
     data: FitData,
     plot_configuration: PlotConfiguration,

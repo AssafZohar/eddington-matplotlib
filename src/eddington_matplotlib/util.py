@@ -57,7 +57,7 @@ def grid(fig, is_grid):
         plt.grid(True, figure=fig)
 
 
-def plot(x, y, fig):
+def plot(x, y, fig):  # pylint: disable=C0103
     """
     Plot y as a function of x.
 
@@ -68,7 +68,9 @@ def plot(x, y, fig):
     plt.plot(x, y, figure=fig)
 
 
-def horizontal_line(fig: plt.Figure, xmin: float, xmax: float, y=0):
+def horizontal_line(  # pylint: disable=C0103
+    fig: plt.Figure, xmin: float, xmax: float, y=0
+):
     """
     Add horizontal line to figure.
 
@@ -79,7 +81,7 @@ def horizontal_line(fig: plt.Figure, xmin: float, xmax: float, y=0):
     plt.hlines(y, xmin=xmin, xmax=xmax, linestyles="dashed", figure=fig)
 
 
-def errorbar(fig, x, y, xerr, yerr):
+def errorbar(fig, x, y, xerr, yerr):  # pylint: disable=C0103
     """
     Plot error bar to figure.
 

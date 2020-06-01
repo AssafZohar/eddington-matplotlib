@@ -12,7 +12,7 @@ from eddington_matplotlib.util import (
 )
 
 
-def plot_fitting(
+def plot_fitting(  # pylint: disable=C0103,R0913
     func,
     data: FitData,
     plot_configuration: PlotConfiguration,
@@ -36,7 +36,9 @@ def plot_fitting(
     errorbar(fig=fig, x=data.x, y=data.y, xerr=data.xerr, yerr=data.yerr)
     if step is None:
         step = (plot_configuration.xmax - plot_configuration.xmin) / 1000.0
-    x = np.arange(plot_configuration.xmin, plot_configuration.xmax, step=step)
-    y = func(a, x)
+    x = np.arange(  # pylint: disable=C0103
+        plot_configuration.xmin, plot_configuration.xmax, step=step
+    )
+    y = func(a, x)  # pylint: disable=C0103
     plot(fig=fig, x=x, y=y)
     show_or_export(fig=fig, output_path=output_path)

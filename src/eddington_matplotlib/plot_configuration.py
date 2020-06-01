@@ -6,7 +6,7 @@ from numbers import Number
 
 
 @dataclass
-class PlotConfiguration:
+class PlotConfiguration:  # pylint: disable=R0902
     """Data class for plotting fitting results."""
 
     xmin: float
@@ -23,7 +23,7 @@ class PlotConfiguration:
     plot_data: bool = False
 
     @classmethod
-    def build(
+    def build(  # pylint: disable=R0913
         cls,
         base_name,
         title=None,
@@ -66,7 +66,7 @@ class PlotConfiguration:
         )
 
     @classmethod
-    def get_plot_borders(cls, x):
+    def get_plot_borders(cls, x):  # pylint: disable=C0103
         """
         Get borders for a plot based on its x values.
 
