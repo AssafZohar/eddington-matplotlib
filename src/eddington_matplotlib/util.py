@@ -90,7 +90,7 @@ def grid(fig, is_grid):
 def show_or_export(fig: plt.Figure, output_path=None):
     """
     Show plot or export it to a file.
-    
+
     :param fig: a plot figure
     :param output_path: Path or None. if None, show plot. otherwise, save to path.
     """

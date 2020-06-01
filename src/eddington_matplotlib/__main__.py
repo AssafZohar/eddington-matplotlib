@@ -17,7 +17,7 @@ parser.add_argument(
 def main():
     """
     Main method to plot data from json file.
-    
+
     Examples for json datafiles can be seen in the "examples" directory.
     """
     args = parser.parse_args()
