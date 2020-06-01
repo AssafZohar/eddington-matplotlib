@@ -12,7 +12,7 @@ from eddington_matplotlib.util import (
 )
 
 
-def plot_fitting(
+def plot_fitting(  # pylint: disable=C0103,R0913
     func,
     data: FitData,
     plot_configuration: PlotConfiguration,
