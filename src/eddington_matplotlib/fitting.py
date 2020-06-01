@@ -34,15 +34,15 @@ def plot_fitting(
     :param output_path: Path or None. output path to save the plot.
     """
     fig = get_figure()
-    title(plot_configuration.title, fig=fig)
+    title(fig=fig, title_name=plot_configuration.title)
     label_axes(
-        xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel, fig=fig
+        fig=fig, xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel
     )
-    grid(plot_configuration.grid, fig=fig)
-    errorbar(x=data.x, y=data.y, xerr=data.xerr, yerr=data.yerr, fig=fig)
+    grid(fig=fig, is_grid=plot_configuration.grid)
+    errorbar(fig=fig, x=data.x, y=data.y, xerr=data.xerr, yerr=data.yerr)
     if step is None:
         step = (plot_configuration.xmax - plot_configuration.xmin) / 1000.0
     x = np.arange(plot_configuration.xmin, plot_configuration.xmax, step=step)
     y = func(a, x)
-    plot(x, y, fig=fig)
-    show_or_export(output_path=output_path, fig=fig)
+    plot(fig=fig, x=x, y=y)
+    show_or_export(fig=fig, output_path=output_path)

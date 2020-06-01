@@ -29,7 +29,7 @@ def horizontal_line(fig: plt.Figure, xmin: float, xmax: float, y=0):
     plt.hlines(y, xmin=xmin, xmax=xmax, linestyles="dashed", figure=fig)
 
 
-def errorbar(x, y, xerr, yerr, fig):
+def errorbar(fig, x, y, xerr, yerr):
     """
     Plot error bar to figure.
 
@@ -51,7 +51,7 @@ def errorbar(x, y, xerr, yerr, fig):
     )
 
 
-def title(title_name, fig):
+def title(fig, title_name):
     """
     Add/remove title to figure.
 
@@ -62,13 +62,13 @@ def title(title_name, fig):
         plt.title(title_name, figure=fig)
 
 
-def label_axes(xlabel, ylabel, fig):
+def label_axes(fig, xlabel, ylabel):
     """
     Add/remove labels to figure.
 
+    :param fig: Plot figure.
     :param xlabel: str or None. If None, don't add label. otherwise, add given label
     :param ylabel: str or None. If None, don't add label. otherwise, add given label
-    :param fig: Plot figure.
     """
     if xlabel is not None:
         plt.xlabel(xlabel, figure=fig)
@@ -76,12 +76,12 @@ def label_axes(xlabel, ylabel, fig):
         plt.ylabel(ylabel, figure=fig)
 
 
-def grid(is_grid, fig):
+def grid(fig, is_grid):
     """
     Add/remove grid to figure.
 
-    :param is_grid: Boolean. add or remote grid to plot
     :param fig: Plot figure
+    :param is_grid: Boolean. add or remote grid to plot
     """
     if is_grid:
         plt.grid(True, figure=fig)

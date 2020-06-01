@@ -21,10 +21,10 @@ def plot_data(data: FitData, plot_configuration: PlotConfiguration, output_path=
     :param output_path: Path or None. output path to save the plot.
     """
     fig = get_figure()
-    title(plot_configuration.data_title, fig=fig)
+    title(fig=fig, title_name=plot_configuration.data_title)
     label_axes(
-        xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel, fig=fig
+        fig=fig, xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel
     )
-    grid(plot_configuration.grid, fig=fig)
-    errorbar(x=data.x, y=data.y, xerr=data.xerr, yerr=data.yerr, fig=fig)
-    show_or_export(output_path=output_path, fig=fig)
+    grid(fig=fig, is_grid=plot_configuration.grid)
+    errorbar(fig=fig, x=data.x, y=data.y, xerr=data.xerr, yerr=data.yerr)
+    show_or_export(fig=fig, output_path=output_path)
