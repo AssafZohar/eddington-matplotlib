@@ -18,7 +18,7 @@ def plot(x, y, fig):
     plt.plot(x, y, figure=fig)
 
 
-def horizontal_line(xmin, xmax, y=0):
+def horizontal_line(fig: plt.Figure, xmin: float, xmax: float, y=0):
     """
     Add horizontal line to figure.
 
@@ -26,7 +26,7 @@ def horizontal_line(xmin, xmax, y=0):
     :param xmax: Maximum x value of line
     :param y: The y value of the line
     """
-    plt.hlines(y, xmin=xmin, xmax=xmax, linestyles="dashed")
+    plt.hlines(y, xmin=xmin, xmax=xmax, linestyles="dashed", figure=fig)
 
 
 def errorbar(x, y, xerr, yerr, fig):

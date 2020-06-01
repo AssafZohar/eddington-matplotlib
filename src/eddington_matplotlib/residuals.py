@@ -39,6 +39,6 @@ def plot_residuals(
     )
     grid(plot_configuration.grid, fig=fig)
     y_residuals = data.y - func(a, data.x)
-    horizontal_line(plot_configuration.xmin, plot_configuration.xmax)
+    horizontal_line(fig=fig, xmin=plot_configuration.xmin, xmax=plot_configuration.xmax)
     errorbar(x=data.x, y=y_residuals, xerr=data.xerr, yerr=data.yerr, fig=fig)
     show_or_export(output_path=output_path, fig=fig)

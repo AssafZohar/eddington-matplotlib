@@ -20,7 +20,9 @@ class PlotResidualsBaseTestCase(PlotBaseTestCase):
         self.check_error_bar(y=self.data.y - self.func(self.a, self.data.x))
 
     def test_horizontal_line(self):
-        self.plt.hlines(0, xmin=self.xmin, xmax=self.xmax, linestyles="dashed")
+        self.plt.hlines.assert_called_with(
+            0, xmin=self.xmin, xmax=self.xmax, linestyles="dashed", figure=self.figure
+        )
 
 
 class TestPlotResidualsWithoutLabelsAndTitle(TestCase, PlotResidualsBaseTestCase):
