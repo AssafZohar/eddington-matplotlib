@@ -98,7 +98,7 @@ jobs:
     - save_cache:
         paths:
           - ~/.local
-        key: lib-{{ checksum "setup.cfg" }}
+        key: lib-{{ .Environment.CACHE_VERSION }}-{{ checksum "setup.cfg" }}
 workflows:
   version: 2
   workflow:
