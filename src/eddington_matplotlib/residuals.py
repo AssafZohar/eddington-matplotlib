@@ -7,12 +7,9 @@ from eddington_core import FitData
 from eddington_matplotlib.plot_configuration import PlotConfiguration
 from eddington_matplotlib.util import (
     get_figure,
-    title,
-    label_axes,
     horizontal_line,
     errorbar,
     show_or_export,
-    grid,
 )
 
 
@@ -32,12 +29,10 @@ def plot_residuals(
     :param a: The parameters result
     :param output_path: Path or None. output path to save the plot.
     """
-    fig = get_figure()
-    title(fig=fig, title_name=plot_configuration.residuals_title)
-    label_axes(
-        xlabel=plot_configuration.xlabel, ylabel=plot_configuration.ylabel, fig=fig
+    fig = get_figure(
+        title_name=plot_configuration.residuals_title,
+        plot_configuration=plot_configuration,
     )
-    grid(fig=fig, is_grid=plot_configuration.grid)
     y_residuals = data.y - func(a, data.x)
     horizontal_line(fig=fig, xmin=plot_configuration.xmin, xmax=plot_configuration.xmax)
     errorbar(fig=fig, x=data.x, y=y_residuals, xerr=data.xerr, yerr=data.yerr)
