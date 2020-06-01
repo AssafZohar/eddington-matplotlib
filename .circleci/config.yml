@@ -25,7 +25,7 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-          - tox-{{ checksum "tox.ini" }}-{{ checksum "setup.cfg" }}-{{ checksum ".coveragerc" }}
+          - tox-{{ .Environment.CACHE_VERSION }}-{{ checksum "tox.ini" }}-{{ checksum "setup.cfg" }}-{{ checksum ".coveragerc" }}
     - run:
         name: Install tox
         command: |
@@ -45,50 +45,60 @@ jobs:
     - save_cache:
         paths:
           - ~/project/.tox
-        key: tox-{{ checksum "tox.ini" }}-{{ checksum "setup.cfg" }}-{{ checksum ".coveragerc" }}
+        key: tox-{{ .Environment.CACHE_VERSION }}-{{ checksum "tox.ini" }}-{{ checksum "setup.cfg" }}-{{ checksum ".coveragerc" }}
     - store_test_results:
         path: test_results
     - store_artifacts:
         path: htmlcov
   publish:
     docker:
-      - image: circleci/golang:1.14-buster
+    - image: circleci/golang:1.14-buster
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - lib-{{ checksum "setup.cfg" }}
-      - run:
-          name: "Import needed packages"
-          command: |
-            sudo apt-get install -y python3 python3-pip
-            python3 -m pip install --upgrade pip --user
-            pip3 install --upgrade setuptools wheel twine --user
-            python3 setup.py install --user
-            export SOURCE_PATH=$HOME/project/src
-            export PYTHONPATH=$PYTHONPATH:$SOURCE_PATH
-      - run:
-          name: "Create release"
-          command: |
-            python3 setup.py sdist bdist_wheel
-      - run:
-          name: "Publish Release on GitHub"
-          command: |
-            go get github.com/tcnksm/ghr
-            VERSION=v$(python3 setup.py --version)
-            if [[ ${VERSION} == *"dev"* ]]; then
-               PRERELEASE="-prerelease"
-            fi
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${PRERELEASE} ${VERSION} ./dist
-      - run:
-          name: "Publish Package on pip"
-          command: |
-            $HOME/.local/bin/twine check ./dist/*
-            $HOME/.local/bin/twine upload ./dist/*
-      - save_cache:
-          paths:
-            - ~/.local
-          key: lib-{{ checksum "setup.cfg" }}
+    - checkout
+    - restore_cache:
+        keys:
+          - lib-{{ .Environment.CACHE_VERSION }}-{{ checksum "setup.cfg" }}
+    - run:
+        name: "Install python and pip"
+        command: |
+          sudo apt-get install -y python3 python3-pip
+          python3 -m pip install --upgrade pip --user
+    - run:
+        name: "Run full static check"
+        command: |
+          pip3 install eddington-static --user
+          $HOME/.local/bin/eddington-static src
+          $HOME/.local/bin/eddington-static tests --filter test
+          $HOME/.local/bin/eddington-static fitting_tests --filter test
+    - run:
+        name: "Import needed packages for release"
+        command: |
+          pip3 install --upgrade setuptools wheel twine --user
+          python3 setup.py install --user
+          export SOURCE_PATH=$HOME/project/src
+          export PYTHONPATH=$PYTHONPATH:$SOURCE_PATH
+    - run:
+        name: "Create release"
+        command: |
+          python3 setup.py sdist bdist_wheel
+    - run:
+        name: "Publish Release on GitHub"
+        command: |
+          go get github.com/tcnksm/ghr
+          VERSION=v$(python3 setup.py --version)
+          if [[ ${VERSION} == *"dev"* ]]; then
+             PRERELEASE="-prerelease"
+          fi
+          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${PRERELEASE} ${VERSION} ./dist
+    - run:
+        name: "Publish Package on pip"
+        command: |
+          $HOME/.local/bin/twine check ./dist/*
+          $HOME/.local/bin/twine upload ./dist/*
+    - save_cache:
+        paths:
+          - ~/.local
+        key: lib-{{ checksum "setup.cfg" }}
 workflows:
   version: 2
   workflow:
