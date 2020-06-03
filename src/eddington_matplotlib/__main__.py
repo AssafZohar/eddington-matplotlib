@@ -8,7 +8,10 @@ from eddington_core import FitData, FitFunctionsRegistry, FitResult
 from eddington_matplotlib import PlotConfiguration, OutputConfiguration, plot_all
 
 parser = ArgumentParser(description="Plot data and results from file")
-parser.add_argument("-i", "--input", type=Path, help="Input file to plot from")
+parser.add_argument("input", type=Path, help="Input file to plot from")
+parser.add_argument(
+    "-o", "--output", type=Path, help="Output directory to save plots in"
+)
 parser.add_argument(
     "-g", "--grid", default=False, action="store_true", help="Add grid to plot"
 )
@@ -41,7 +44,9 @@ def main():
         ylabel="y",
         grid=args.grid,
     )
-    output_configuration = OutputConfiguration()
+    output_configuration = OutputConfiguration.build(
+        base_name=func.name, output_dir=args.output
+    )
     plot_all(
         func=func,
         data=data,
