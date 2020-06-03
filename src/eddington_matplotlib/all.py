@@ -26,7 +26,7 @@ def plot_all(
      where and whether to save plot to file.
     """
     if plot_configuration.export_result:
-        result.export_to_file(output_configuration.result_output_path)
+        result.print_or_export(output_configuration.result_output_path)
     if plot_configuration.plot_data:
         plot_data(
             data=data,

@@ -49,7 +49,7 @@ class PlotAllBaseTestCase:
 
     def test_export_result(self):
         if self.should_export_result:
-            self.result.export_to_file.assert_called_once_with(
+            self.result.print_or_export.assert_called_once_with(
                 self.output_configuration.result_output_path,
             )
         else:
