@@ -25,7 +25,7 @@ def plot_all(
     :param output_configuration: :class:`OutputConfiguration` instance indicates
      where and whether to save plot to file.
     """
-    if plot_configuration.export_result:
+    if plot_configuration.print_results:
         result.print_or_export(output_configuration.result_output_path)
     if plot_configuration.plot_data:
         plot_data(

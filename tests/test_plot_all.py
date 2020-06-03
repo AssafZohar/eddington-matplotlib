@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Dict
-from unittest import TestCase
+
+from eddington_test import MetaTestCase
 from mock import patch, Mock
 import numpy as np
 
@@ -8,7 +9,11 @@ from eddington_matplotlib import PlotConfiguration, OutputConfiguration, plot_al
 from tests.base_test_cases import dummy_func
 
 
-class PlotAllBaseTestCase:
+class PlotAllMetaTestCase(MetaTestCase):
+    should_print_results = True
+    should_plot_fitting = True
+    should_plot_residuals = True
+    should_plot_data = False
 
     data = "data"
     xmin = 0.2
@@ -48,7 +53,7 @@ class PlotAllBaseTestCase:
         )
 
     def test_export_result(self):
-        if self.should_export_result:
+        if self.should_print_results:
             self.result.print_or_export.assert_called_once_with(
                 self.output_configuration.result_output_path,
             )
@@ -90,57 +95,25 @@ class PlotAllBaseTestCase:
             self.plot_residuals.assert_not_called()
 
 
-class TestPlotAllDefault(TestCase, PlotAllBaseTestCase):
+class TestPlotAllDefault(metaclass=PlotAllMetaTestCase):
     kwargs: Dict = dict()
 
-    should_export_result = True
-    should_plot_fitting = True
-    should_plot_residuals = True
-    should_plot_data = False
 
-    def setUp(self):
-        PlotAllBaseTestCase.setUp(self)
-
-
-class TestPlotWithPlotData(TestCase, PlotAllBaseTestCase):
+class TestPlotWithPlotData(metaclass=PlotAllMetaTestCase):
     kwargs = dict(plot_data=True)
-    should_export_result = True
-    should_plot_fitting = True
-    should_plot_residuals = True
     should_plot_data = True
 
-    def setUp(self):
-        PlotAllBaseTestCase.setUp(self)
 
-
-class TestPlotWithoutPlotFitting(TestCase, PlotAllBaseTestCase):
+class TestPlotWithoutPlotFitting(metaclass=PlotAllMetaTestCase):
     kwargs = dict(plot_fitting=False)
-    should_export_result = True
     should_plot_fitting = False
-    should_plot_residuals = True
-    should_plot_data = False
-
-    def setUp(self):
-        PlotAllBaseTestCase.setUp(self)
 
 
-class TestPlotWithoutPlotResiduals(TestCase, PlotAllBaseTestCase):
+class TestPlotWithoutPlotResiduals(metaclass=PlotAllMetaTestCase):
     kwargs = dict(plot_residuals=False)
-    should_export_result = True
-    should_plot_fitting = True
     should_plot_residuals = False
-    should_plot_data = False
-
-    def setUp(self):
-        PlotAllBaseTestCase.setUp(self)
 
 
-class TestPlotWithoutExportResult(TestCase, PlotAllBaseTestCase):
-    kwargs = dict(export_result=False)
-    should_export_result = False
-    should_plot_fitting = True
-    should_plot_residuals = True
-    should_plot_data = False
-
-    def setUp(self):
-        PlotAllBaseTestCase.setUp(self)
+class TestPlotWithoutExportResult(metaclass=PlotAllMetaTestCase):
+    kwargs = dict(print_results=False)
+    should_print_results = False

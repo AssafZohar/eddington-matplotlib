@@ -39,7 +39,6 @@ def main():
         xmax=xmax,
         xlabel="x",
         ylabel="y",
-        export_result=False,
         grid=args.grid,
     )
     output_configuration = OutputConfiguration()
