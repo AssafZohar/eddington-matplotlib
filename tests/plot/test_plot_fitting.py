@@ -3,7 +3,7 @@ from unittest import TestCase
 import numpy as np
 
 from eddington_matplotlib import plot_fitting
-from tests.base_test_cases import PlotBaseTestCase
+from tests.plot import PlotBaseTestCase
 
 
 class PlotFittingBaseTestCase(PlotBaseTestCase):

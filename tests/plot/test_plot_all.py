@@ -6,7 +6,7 @@ from mock import Mock
 import numpy as np
 
 from eddington_matplotlib import PlotConfiguration, OutputConfiguration, plot_all
-from tests.base_test_cases import dummy_func
+from tests.plot import dummy_func
 
 
 should_print_results = True
