@@ -4,8 +4,7 @@ import pytest
 from eddington_matplotlib import plot_data, PlotConfiguration
 from tests.plot import (
     check_error_bar,
-    xmin,
-    xmax,
+    base_kwargs,
     data,
     check_x_label,
     check_y_label,
@@ -13,8 +12,6 @@ from tests.plot import (
     check_grid,
     check_title,
 )
-
-base_kwargs = dict(xmin=xmin, xmax=xmax)
 
 
 @pytest.fixture(

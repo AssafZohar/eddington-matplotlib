@@ -21,6 +21,9 @@ a = np.array([1.1, 1.92])
 data = FitData.random(dummy_func)
 xmin = -1
 xmax = 1
+xrange = np.arange(xmin, xmax, step=0.002)
+yrange = dummy_func(a, xrange)
+base_kwargs = dict(xmin=xmin, xmax=xmax)
 
 
 def check_error_bar(plt, y):
