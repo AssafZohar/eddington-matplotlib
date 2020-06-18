@@ -3,7 +3,7 @@ from unittest import TestCase
 import numpy as np
 
 from eddington_matplotlib import plot_data
-from tests.plot import PlotBaseTestCase
+from tests.plot import PlotBaseTestCase, check_error_bar
 
 
 class PlotDataBaseTestCase(PlotBaseTestCase):
@@ -19,7 +19,7 @@ class PlotDataBaseTestCase(PlotBaseTestCase):
         )
 
     def test_error_bar(self):
-        self.check_error_bar(y=self.data.y)
+        check_error_bar(plt=self.plt, y=self.data.y)
 
 
 class TestPlotDataWithoutLabelsAndTitle(TestCase, PlotDataBaseTestCase):

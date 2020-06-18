@@ -3,7 +3,7 @@ from unittest import TestCase
 import numpy as np
 
 from eddington_matplotlib import plot_fitting
-from tests.plot import PlotBaseTestCase
+from tests.plot import PlotBaseTestCase, check_error_bar
 
 
 class PlotFittingBaseTestCase(PlotBaseTestCase):
@@ -21,7 +21,7 @@ class PlotFittingBaseTestCase(PlotBaseTestCase):
         )
 
     def test_error_bar(self):
-        self.check_error_bar(y=self.data.y)
+        check_error_bar(plt=self.plt, y=self.data.y)
 
     def test_plot(self):
         self.assertEqual(

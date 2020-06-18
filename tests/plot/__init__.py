@@ -2,10 +2,14 @@ from pathlib import Path
 from typing import Optional
 
 import numpy as np
+import pytest
 from mock import patch, call
 
 from eddington_core import FitData, fit_function
 from eddington_matplotlib import PlotConfiguration
+
+delta = 1e-5
+decimal = 5
 
 
 @fit_function(n=2, save=False)
@@ -13,12 +17,90 @@ def dummy_func(a, x):
     return a[0] + a[1] * x
 
 
-class PlotBaseTestCase:
+data = FitData.random(dummy_func)
 
-    decimal = 5
+
+def check_error_bar(plt, y):
+    assert (
+        1 == plt.errorbar.call_count
+    ), "errorbar call count is different than expected"
+    assert 0 == len(
+        plt.errorbar.call_args_list[0].args
+    ), "errorbar arguments number is different than expected"
+    assert 8 == len(
+        plt.errorbar.call_args_list[0].kwargs
+    ), "errorbar keyword arguments number is different than expected"
+    assert data.x == pytest.approx(
+        plt.errorbar.call_args_list[0].kwargs["x"], rel=delta
+    ), "X is different than expected"
+    assert y == pytest.approx(
+        plt.errorbar.call_args_list[0].kwargs["y"], rel=delta
+    ), "Y is different than expected"
+    assert data.xerr == pytest.approx(
+        plt.errorbar.call_args_list[0].kwargs["xerr"], rel=delta
+    ), "X error is different than expected"
+    assert data.yerr == pytest.approx(
+        plt.errorbar.call_args_list[0].kwargs["yerr"], rel=delta
+    ), "Y error is different than expected"
+    assert (
+        1 == plt.errorbar.call_args_list[0].kwargs["markersize"]
+    ), "markersize is different than expected"
+    assert (
+        "o" == plt.errorbar.call_args_list[0].kwargs["marker"]
+    ), "marker is different than expected"
+    assert (
+        "None" == plt.errorbar.call_args_list[0].kwargs["linestyle"]
+    ), "linestyle is different than expected"
+
+
+def check_titles(plt, figure, titles=None):
+    if titles is None or len(titles) == 0:
+        plt.title.assert_not_called()
+        return
+    assert plt.title.call_count == len(
+        titles
+    ), "Title function has been called unexpected times"
+    for i, title in enumerate(titles):
+        assert plt.title.call_args_list[i] == call(
+            title, figure=figure
+        ), f"Title call number {i} is different than expected"
+
+
+def check_x_label(plt, figure, xlabel=None):
+    if xlabel is None:
+        plt.xlabel.assert_not_called()
+    else:
+        plt.xlabel.assert_called_once_with(xlabel, figure=figure)
+
+
+def check_y_label(plt, figure, ylabel=None):
+    if ylabel is None:
+        plt.ylabel.assert_not_called()
+    else:
+        plt.ylabel.assert_called_once_with(ylabel, figure=figure)
+
+
+def check_show_or_export(plt, figure, output_path=None):
+    if output_path is None:
+        plt.show.assert_called_once_with()
+        figure.savefig.assert_not_called()
+    else:
+        plt.show.assert_not_called()
+        figure.savefig.assert_called_once_with(output_path)
+
+
+def check_grid(plt, figure, grid=False):
+    if grid:
+        plt.grid.assert_called_with(True, figure=figure)
+    else:
+        plt.grid.assert_not_called()
+
+
+class PlotBaseTestCase:
+    decimal = decimal
 
     a = np.array([1.1, 1.92])
-    data = FitData.random(dummy_func)
+    data = data
     xlabel: Optional[str] = None
     ylabel: Optional[str] = None
     title: Optional[str] = None
@@ -54,100 +136,24 @@ class PlotBaseTestCase:
     def func(cls, a, x):
         return a[0] + a[1] * x
 
-    def check_error_bar(self, y):
-        self.assertEqual(
-            1,
-            self.plt.errorbar.call_count,
-            msg="errorbar call count is different than expected",
-        )
-        self.assertEqual(
-            0,
-            len(self.plt.errorbar.call_args_list[0].args),
-            msg="errorbar arguments number is different than expected",
-        )
-        self.assertEqual(
-            8,
-            len(self.plt.errorbar.call_args_list[0].kwargs),
-            msg="errorbar keyword arguments number is different than expected",
-        )
-        np.testing.assert_almost_equal(
-            self.data.x,
-            self.plt.errorbar.call_args_list[0].kwargs["x"],
-            decimal=self.decimal,
-            err_msg="X is different than expected",
-        )
-        np.testing.assert_almost_equal(
-            y,
-            self.plt.errorbar.call_args_list[0].kwargs["y"],
-            decimal=self.decimal,
-            err_msg="Y is different than expected",
-        )
-        np.testing.assert_almost_equal(
-            self.data.xerr,
-            self.plt.errorbar.call_args_list[0].kwargs["xerr"],
-            decimal=self.decimal,
-            err_msg="X error is different than expected",
-        )
-        np.testing.assert_almost_equal(
-            self.data.yerr,
-            self.plt.errorbar.call_args_list[0].kwargs["yerr"],
-            decimal=self.decimal,
-            err_msg="Y error is different than expected",
-        )
-        self.assertEqual(
-            1,
-            self.plt.errorbar.call_args_list[0].kwargs["markersize"],
-            msg="markersize is different than expected",
-        )
-        self.assertEqual(
-            "o",
-            self.plt.errorbar.call_args_list[0].kwargs["marker"],
-            msg="marker is different than expected",
-        )
-        self.assertEqual(
-            "None",
-            self.plt.errorbar.call_args_list[0].kwargs["linestyle"],
-            msg="linestyle is different than expected",
-        )
-
     def test_title(self):
         titles = [
             title
             for title in [self.data_title, self.title, self.residuals_title]
             if title is not None
         ]
-        if len(titles) == 0:
-            self.plt.title.assert_not_called()
-            return
-        for i, title in enumerate(titles):
-            self.assertEqual(
-                call(title, figure=self.figure),
-                self.plt.title.call_args_list[i],
-                msg=f"Title call number {i} is different than expected",
-            )
+        check_titles(plt=self.plt, figure=self.figure, titles=titles)
 
     def test_xlabel(self):
-        if self.xlabel is None:
-            self.plt.xlabel.assert_not_called()
-        else:
-            self.plt.xlabel.assert_called_once_with(self.xlabel, figure=self.figure)
+        check_x_label(plt=self.plt, figure=self.figure, xlabel=self.xlabel)
 
     def test_ylabel(self):
-        if self.ylabel is None:
-            self.plt.ylabel.assert_not_called()
-        else:
-            self.plt.ylabel.assert_called_once_with(self.ylabel, figure=self.figure)
+        check_y_label(plt=self.plt, figure=self.figure, ylabel=self.ylabel)
 
     def test_show_or_export(self):
-        if self.output_path is None:
-            self.plt.show.assert_called_once_with()
-            self.figure.savefig.assert_not_called()
-        else:
-            self.plt.show.assert_not_called()
-            self.figure.savefig.assert_called_once_with(self.output_path)
+        check_show_or_export(
+            plt=self.plt, figure=self.figure, output_path=self.output_path
+        )
 
     def test_grid(self):
-        if self.grid:
-            self.plt.grid.assert_called_with(True, figure=self.figure)
-        else:
-            self.plt.grid.assert_not_called()
+        check_grid(plt=self.plt, figure=self.figure, grid=self.grid)

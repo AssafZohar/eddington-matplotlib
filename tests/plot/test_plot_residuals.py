@@ -2,7 +2,7 @@ from pathlib import Path
 from unittest import TestCase
 
 from eddington_matplotlib import plot_residuals
-from tests.plot import PlotBaseTestCase
+from tests.plot import PlotBaseTestCase, check_error_bar
 
 
 class PlotResidualsBaseTestCase(PlotBaseTestCase):
@@ -17,7 +17,7 @@ class PlotResidualsBaseTestCase(PlotBaseTestCase):
         )
 
     def test_error_bar(self):
-        self.check_error_bar(y=self.data.y - self.func(self.a, self.data.x))
+        check_error_bar(plt=self.plt, y=self.data.y - self.func(self.a, self.data.x))
 
     def test_horizontal_line(self):
         self.plt.hlines.assert_called_with(
