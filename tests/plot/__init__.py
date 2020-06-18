@@ -1,12 +1,8 @@
-from pathlib import Path
-from typing import Optional
-
 import numpy as np
 import pytest
-from mock import patch, call
+from mock import call
 
 from eddington_core import FitData, fit_function
-from eddington_matplotlib import PlotConfiguration
 
 
 @fit_function(n=2, save=False)
@@ -107,66 +103,3 @@ def check_grid(plt, figure, grid=False):
         plt.grid.assert_called_with(True, figure=figure)
     else:
         plt.grid.assert_not_called()
-
-
-class PlotBaseTestCase:
-    decimal = decimal
-
-    a = a
-    data = data
-    xlabel: Optional[str] = None
-    ylabel: Optional[str] = None
-    title: Optional[str] = None
-    data_title: Optional[str] = None
-    residuals_title: Optional[str] = None
-    expected_title: Optional[str] = None
-
-    grid = False
-    output_path: Optional[Path] = None
-
-    xmin = xmin
-    xmax = xmax
-
-    def setUp(self):
-        plot_patcher = patch("eddington_matplotlib.util.plt")
-        self.plt = plot_patcher.start()
-        self.figure = self.plt.figure.return_value
-
-        self.addCleanup(plot_patcher.stop)
-
-        self.plot_configuration = PlotConfiguration(
-            xlabel=self.xlabel,
-            ylabel=self.ylabel,
-            data_title=self.data_title,
-            title=self.title,
-            residuals_title=self.residuals_title,
-            xmin=self.xmin,
-            xmax=self.xmax,
-            grid=self.grid,
-        )
-
-    @classmethod
-    def func(cls, a, x):
-        return a[0] + a[1] * x
-
-    def test_title(self):
-        titles = [
-            title
-            for title in [self.data_title, self.title, self.residuals_title]
-            if title is not None
-        ]
-        check_titles(plt=self.plt, figure=self.figure, titles=titles)
-
-    def test_xlabel(self):
-        check_x_label(plt=self.plt, figure=self.figure, xlabel=self.xlabel)
-
-    def test_ylabel(self):
-        check_y_label(plt=self.plt, figure=self.figure, ylabel=self.ylabel)
-
-    def test_show_or_export(self):
-        check_show_or_export(
-            plt=self.plt, figure=self.figure, output_path=self.output_path
-        )
-
-    def test_grid(self):
-        check_grid(plt=self.plt, figure=self.figure, grid=self.grid)
