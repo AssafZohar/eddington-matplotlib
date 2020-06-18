@@ -1,67 +1,58 @@
-from unittest import TestCase
+import pytest
+from pytest_cases import cases_data, THIS_MODULE
 import numpy as np
 from eddington_matplotlib import PlotConfiguration
 
+delta = 1e-5
+size = 20
 
-class TestGotPlotBorders(TestCase):
 
-    decimal = 5
-    size = 20
+def case_positive_borders():
+    inp = dict(min=1, max=6)
+    out = dict(min=0.5, max=6.5)
 
-    def check(self):
-        x = np.random.uniform(self.min, self.max, size=self.size)
-        x = np.concatenate((x, np.array([self.min, self.max])), axis=None)
-        np.random.shuffle(x)
-        actual_min, actual_max = PlotConfiguration.get_plot_borders(x)
-        self.assertAlmostEqual(
-            self.expected_min,
-            actual_min,
-            places=self.decimal,
-            msg=f"Expected minimum of {x} is different than expected.",
-        )
-        self.assertAlmostEqual(
-            self.expected_max,
-            actual_max,
-            places=self.decimal,
-            msg=f"Expected maximum of {x} is different than expected.",
-        )
+    return inp, out
 
-    def test_positive_borders(self):
-        self.min = 1
-        self.max = 6
-        self.expected_min = 0.5
-        self.expected_max = 6.5
 
-        self.check()
+def case_min_border_zero():
+    inp = dict(min=0, max=5)
+    out = dict(min=-0.5, max=5.5)
 
-    def test_min_border_zero(self):
-        self.min = 0
-        self.max = 5
-        self.expected_min = -0.5
-        self.expected_max = 5.5
+    return inp, out
 
-        self.check()
 
-    def test_min_border_negative_max_border_positive(self):
-        self.min = -4
-        self.max = 6
-        self.expected_min = -5
-        self.expected_max = 7
+def case_min_border_negative_max_border_positive():
+    inp = dict(min=-4, max=6)
+    out = dict(min=-5, max=7)
 
-        self.check()
+    return inp, out
 
-    def test_max_border_zero(self):
-        self.min = -5
-        self.max = 0
-        self.expected_min = -5.5
-        self.expected_max = 0.5
 
-        self.check()
+def case_max_border_zero():
+    inp = dict(min=-5, max=0)
+    out = dict(min=-5.5, max=0.5)
 
-    def test_negative_borders(self):
-        self.min = -6
-        self.max = -1
-        self.expected_min = -6.5
-        self.expected_max = -0.5
+    return inp, out
 
-        self.check()
+
+def case_negative_borders():
+    inp = dict(min=-6, max=-1)
+    out = dict(min=-6.5, max=-0.5)
+
+    return inp, out
+
+
+@cases_data(module=THIS_MODULE)
+def test_borders(case_data):
+    inp, out = case_data.get()
+    min_value, max_value = inp["min"], inp["max"]
+    x = np.random.uniform(min_value, max_value, size=size)
+    x = np.concatenate((x, np.array([min_value, max_value])), axis=None)
+    np.random.shuffle(x)
+    actual_min, actual_max = PlotConfiguration.get_plot_borders(x)
+    assert out["min"] == pytest.approx(
+        actual_min, rel=delta
+    ), f"Expected minimum of {x} is different than expected."
+    assert out["max"] == pytest.approx(
+        actual_max, rel=delta
+    ), f"Expected maximum of {x} is different than expected."
