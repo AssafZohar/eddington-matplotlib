@@ -27,6 +27,10 @@ def case_data_title():
     return dict(data_title="Data Title", **base_kwargs), None
 
 
+def case_residuals_title():
+    return dict(residuals_title="Residuals Title", **base_kwargs), None
+
+
 def case_output_path():
     return base_kwargs, Path("/dir/to/output/linear_data.png")
 

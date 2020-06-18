@@ -1,79 +1,84 @@
-from pathlib import Path
-from unittest import TestCase
+from pytest_cases import fixture_plus, cases_data
 
-from eddington_matplotlib import plot_residuals
-from tests.plot import PlotBaseTestCase, check_error_bar
-
-
-class PlotResidualsBaseTestCase(PlotBaseTestCase):
-    def setUp(self):
-        PlotBaseTestCase.setUp(self)
-        plot_residuals(
-            func=self.func,
-            data=self.data,
-            plot_configuration=self.plot_configuration,
-            a=self.a,
-            output_path=self.output_path,
-        )
-
-    def test_error_bar(self):
-        check_error_bar(plt=self.plt, y=self.data.y - self.func(self.a, self.data.x))
-
-    def test_horizontal_line(self):
-        self.plt.hlines.assert_called_with(
-            0, xmin=self.xmin, xmax=self.xmax, linestyles="dashed", figure=self.figure
-        )
+from eddington_matplotlib import plot_residuals, PlotConfiguration
+from tests.plot import (
+    check_error_bar,
+    data,
+    a,
+    check_title,
+    check_x_label,
+    check_y_label,
+    check_show_or_export,
+    check_grid,
+    dummy_func,
+    xmin,
+    xmax,
+)
+import tests.plot.plot_cases as cases
 
 
-class TestPlotResidualsWithoutLabelsAndTitle(TestCase, PlotResidualsBaseTestCase):
-    def setUp(self):
-        PlotResidualsBaseTestCase.setUp(self)
+@fixture_plus
+@cases_data(module=cases)
+def plot_residuals_fixture(case_data, plt_mock):
+    kwargs, output_path = case_data.get()
+    plot_configuration = PlotConfiguration(**kwargs)
+    plot_residuals(
+        func=dummy_func,
+        data=data,
+        a=a,
+        plot_configuration=plot_configuration,
+        output_path=output_path,
+    )
+    return plt_mock, dict(output_path=output_path, **kwargs)
 
 
-class TestPlotResidualsWithXlabel(TestCase, PlotResidualsBaseTestCase):
-
-    xlabel = "xlabel"
-
-    def setUp(self):
-        PlotResidualsBaseTestCase.setUp(self)
+def test_title(plot_residuals_fixture):
+    mocks, expected = plot_residuals_fixture
+    plt, figure = mocks["plt"], mocks["figure"]
+    check_title(plt=plt, figure=figure, title=expected.get("residuals_title", None))
 
 
-class TestPlotResidualsWithYlabel(TestCase, PlotResidualsBaseTestCase):
-
-    ylabel = "ylabel"
-
-    def setUp(self):
-        PlotResidualsBaseTestCase.setUp(self)
+def test_xlabel(plot_residuals_fixture):
+    mocks, expected = plot_residuals_fixture
+    plt, figure = mocks["plt"], mocks["figure"]
+    check_x_label(plt=plt, figure=figure, xlabel=expected.get("xlabel", None))
 
 
-class TestPlotResidualsWithTitle(TestCase, PlotResidualsBaseTestCase):
-
-    residuals_title = "Title - Residuals"
-
-    def setUp(self):
-        PlotResidualsBaseTestCase.setUp(self)
+def test_ylabel(plot_residuals_fixture):
+    mocks, expected = plot_residuals_fixture
+    plt, figure = mocks["plt"], mocks["figure"]
+    check_y_label(plt=plt, figure=figure, ylabel=expected.get("ylabel", None))
 
 
-class TestPlotResidualsWithLabelsAndTitle(TestCase, PlotResidualsBaseTestCase):
-
-    xlabel = "xlabel"
-    ylabel = "ylabel"
-    residuals_title = "Title - Residuals"
-
-    def setUp(self):
-        PlotResidualsBaseTestCase.setUp(self)
+def test_show_or_export(plot_residuals_fixture):
+    mocks, expected = plot_residuals_fixture
+    plt, figure = mocks["plt"], mocks["figure"]
+    check_show_or_export(
+        plt=plt, figure=figure, output_path=expected.get("output_path", None)
+    )
 
 
-class TestPlotResidualsExportToFile(TestCase, PlotResidualsBaseTestCase):
-
-    output_path = Path("/dir/to/output/linear_fitting_residuals.png")
-
-    def setUp(self):
-        PlotResidualsBaseTestCase.setUp(self)
+def test_grid(plot_residuals_fixture):
+    mocks, expected = plot_residuals_fixture
+    plt, figure = mocks["plt"], mocks["figure"]
+    check_grid(plt=plt, figure=figure, grid=expected.get("grid", False))
 
 
-class TestPlotFittingWithGrid(TestCase, PlotResidualsBaseTestCase):
-    grid = True
+def test_horizontal_line(plot_residuals_fixture):
+    mocks, expected = plot_residuals_fixture
+    plt, figure = mocks["plt"], mocks["figure"]
+    plt.hlines.assert_called_with(
+        0, xmin=xmin, xmax=xmax, linestyles="dashed", figure=figure
+    )
 
-    def setUp(self):
-        PlotResidualsBaseTestCase.setUp(self)
+
+def test_error_bar(plot_residuals_fixture):
+    mocks, expected = plot_residuals_fixture
+    plt, figure = mocks["plt"], mocks["figure"]
+    check_error_bar(plt=plt, y=data.y - dummy_func(a, data.x))
+
+
+def test_plot(plot_residuals_fixture):
+    mocks, expected = plot_residuals_fixture
+    plt, figure = mocks["plt"], mocks["figure"]
+    plt.plot.assert_not_called()
