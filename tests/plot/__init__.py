@@ -8,16 +8,19 @@ from mock import patch, call
 from eddington_core import FitData, fit_function
 from eddington_matplotlib import PlotConfiguration
 
-delta = 1e-5
-decimal = 5
-
 
 @fit_function(n=2, save=False)
 def dummy_func(a, x):
     return a[0] + a[1] * x
 
 
+delta = 1e-5
+decimal = 5
+
+a = np.array([1.1, 1.92])
 data = FitData.random(dummy_func)
+xmin = -1
+xmax = 1
 
 
 def check_error_bar(plt, y):
@@ -25,32 +28,39 @@ def check_error_bar(plt, y):
         1 == plt.errorbar.call_count
     ), "errorbar call count is different than expected"
     assert 0 == len(
-        plt.errorbar.call_args_list[0].args
+        plt.errorbar.call_args[0]
     ), "errorbar arguments number is different than expected"
     assert 8 == len(
-        plt.errorbar.call_args_list[0].kwargs
+        plt.errorbar.call_args[1]
     ), "errorbar keyword arguments number is different than expected"
     assert data.x == pytest.approx(
-        plt.errorbar.call_args_list[0].kwargs["x"], rel=delta
+        plt.errorbar.call_args[1]["x"], rel=delta
     ), "X is different than expected"
     assert y == pytest.approx(
-        plt.errorbar.call_args_list[0].kwargs["y"], rel=delta
+        plt.errorbar.call_args[1]["y"], rel=delta
     ), "Y is different than expected"
     assert data.xerr == pytest.approx(
-        plt.errorbar.call_args_list[0].kwargs["xerr"], rel=delta
+        plt.errorbar.call_args[1]["xerr"], rel=delta
     ), "X error is different than expected"
     assert data.yerr == pytest.approx(
-        plt.errorbar.call_args_list[0].kwargs["yerr"], rel=delta
+        plt.errorbar.call_args[1]["yerr"], rel=delta
     ), "Y error is different than expected"
     assert (
-        1 == plt.errorbar.call_args_list[0].kwargs["markersize"]
+        1 == plt.errorbar.call_args[1]["markersize"]
     ), "markersize is different than expected"
     assert (
-        "o" == plt.errorbar.call_args_list[0].kwargs["marker"]
+        "o" == plt.errorbar.call_args[1]["marker"]
     ), "marker is different than expected"
     assert (
-        "None" == plt.errorbar.call_args_list[0].kwargs["linestyle"]
+        "None" == plt.errorbar.call_args[1]["linestyle"]
     ), "linestyle is different than expected"
+
+
+def check_title(plt, figure, title=None):
+    if title is None:
+        plt.title.assert_not_called()
+    else:
+        plt.title.assert_called_once_with(title, figure=figure)
 
 
 def check_titles(plt, figure, titles=None):
@@ -99,7 +109,7 @@ def check_grid(plt, figure, grid=False):
 class PlotBaseTestCase:
     decimal = decimal
 
-    a = np.array([1.1, 1.92])
+    a = a
     data = data
     xlabel: Optional[str] = None
     ylabel: Optional[str] = None
@@ -111,8 +121,8 @@ class PlotBaseTestCase:
     grid = False
     output_path: Optional[Path] = None
 
-    xmin = -1
-    xmax = 1
+    xmin = xmin
+    xmax = xmax
 
     def setUp(self):
         plot_patcher = patch("eddington_matplotlib.util.plt")
