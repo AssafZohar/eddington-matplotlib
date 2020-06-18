@@ -1,12 +1,10 @@
-from pathlib import Path
-
+from pytest_cases import fixture_plus, cases_data
 import pytest
 
 from eddington_matplotlib import plot_fitting, PlotConfiguration
 from tests.plot import (
     check_error_bar,
     data,
-    base_kwargs,
     a,
     check_title,
     check_x_label,
@@ -18,25 +16,13 @@ from tests.plot import (
     xrange,
     yrange,
 )
+import tests.plot.plot_cases as cases
 
 
-@pytest.fixture(
-    params=[
-        dict(kwargs=base_kwargs, output_path=None),
-        dict(kwargs=dict(xlabel="xlabel", **base_kwargs), output_path=None),
-        dict(kwargs=dict(ylabel="ylabel", **base_kwargs), output_path=None),
-        dict(
-            kwargs=dict(xlabel="xlabel", ylabel="ylabel", **base_kwargs),
-            output_path=None,
-        ),
-        dict(kwargs=dict(title="Fitting Title", **base_kwargs), output_path=None),
-        dict(kwargs=base_kwargs, output_path=Path("/dir/to/output/linear_data.png")),
-        dict(kwargs=dict(grid=True, **base_kwargs), output_path=None),
-    ]
-)
-def plot_fitting_fixture(request, plt_mock):
-    param = request.param
-    kwargs, output_path = param["kwargs"], param["output_path"]
+@fixture_plus
+@cases_data(module=cases)
+def plot_fitting_fixture(case_data, plt_mock):
+    kwargs, output_path = case_data.get()
     plot_configuration = PlotConfiguration(**kwargs)
     plot_fitting(
         func=dummy_func,
