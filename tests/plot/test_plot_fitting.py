@@ -67,17 +67,17 @@ def test_grid(plot_fitting_fixture):
 
 
 def test_error_bar(plot_fitting_fixture):
-    mocks, expected = plot_fitting_fixture
-    plt, figure = mocks["plt"], mocks["figure"]
+    mocks, _ = plot_fitting_fixture
+    plt, _ = mocks["plt"], mocks["figure"]
     check_error_bar(plt=plt, y=data.y)
 
 
 def test_plot(plot_fitting_fixture):
-    mocks, expected = plot_fitting_fixture
+    mocks, _ = plot_fitting_fixture
     plt, figure = mocks["plt"], mocks["figure"]
-    assert 1 == plt.plot.call_count, "Plot call count is different than expected"
-    assert 2 == len(
-        plt.plot.call_args[0]
+    assert plt.plot.call_count == 1, "Plot call count is different than expected"
+    assert (
+        len(plt.plot.call_args[0]) == 2
     ), "Plot arguments count is different than expected"
     assert plt.plot.call_args[0][0] == pytest.approx(
         xrange, rel=delta

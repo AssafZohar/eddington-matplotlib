@@ -65,7 +65,7 @@ def test_grid(plot_residuals_fixture):
 
 
 def test_horizontal_line(plot_residuals_fixture):
-    mocks, expected = plot_residuals_fixture
+    mocks, _ = plot_residuals_fixture
     plt, figure = mocks["plt"], mocks["figure"]
     plt.hlines.assert_called_with(
         0, xmin=xmin, xmax=xmax, linestyles="dashed", figure=figure
@@ -73,12 +73,12 @@ def test_horizontal_line(plot_residuals_fixture):
 
 
 def test_error_bar(plot_residuals_fixture):
-    mocks, expected = plot_residuals_fixture
-    plt, figure = mocks["plt"], mocks["figure"]
+    mocks, _ = plot_residuals_fixture
+    plt, _ = mocks["plt"], mocks["figure"]
     check_error_bar(plt=plt, y=data.y - dummy_func(a, data.x))
 
 
 def test_plot(plot_residuals_fixture):
-    mocks, expected = plot_residuals_fixture
-    plt, figure = mocks["plt"], mocks["figure"]
+    mocks, _ = plot_residuals_fixture
+    plt, _ = mocks["plt"], mocks["figure"]
     plt.plot.assert_not_called()

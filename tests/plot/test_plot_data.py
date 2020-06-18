@@ -58,5 +58,5 @@ def test_grid(plot_data_fixture):
 
 def test_error_bar(plot_data_fixture):
     mocks, _ = plot_data_fixture
-    plt, figure = mocks["plt"], mocks["figure"]
+    plt, _ = mocks["plt"], mocks["figure"]
     check_error_bar(plt=plt, y=data.y)

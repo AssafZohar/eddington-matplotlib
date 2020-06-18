@@ -28,34 +28,34 @@ base_kwargs = dict(xmin=xmin, xmax=xmax)
 
 def check_error_bar(plt, y):
     assert (
-        1 == plt.errorbar.call_count
+        plt.errorbar.call_count == 1
     ), "errorbar call count is different than expected"
-    assert 0 == len(
-        plt.errorbar.call_args[0]
+    assert (
+        len(plt.errorbar.call_args[0]) == 0
     ), "errorbar arguments number is different than expected"
-    assert 8 == len(
-        plt.errorbar.call_args[1]
+    assert (
+        len(plt.errorbar.call_args[1]) == 8
     ), "errorbar keyword arguments number is different than expected"
-    assert data.x == pytest.approx(
-        plt.errorbar.call_args[1]["x"], rel=delta
+    assert (
+        pytest.approx(plt.errorbar.call_args[1]["x"], rel=delta) == data.x
     ), "X is different than expected"
-    assert y == pytest.approx(
-        plt.errorbar.call_args[1]["y"], rel=delta
+    assert (
+        pytest.approx(plt.errorbar.call_args[1]["y"], rel=delta) == y
     ), "Y is different than expected"
-    assert data.xerr == pytest.approx(
-        plt.errorbar.call_args[1]["xerr"], rel=delta
+    assert (
+        pytest.approx(plt.errorbar.call_args[1]["xerr"], rel=delta) == data.xerr
     ), "X error is different than expected"
-    assert data.yerr == pytest.approx(
-        plt.errorbar.call_args[1]["yerr"], rel=delta
+    assert (
+        pytest.approx(plt.errorbar.call_args[1]["yerr"], rel=delta) == data.yerr
     ), "Y error is different than expected"
     assert (
-        1 == plt.errorbar.call_args[1]["markersize"]
+        plt.errorbar.call_args[1]["markersize"] == 1
     ), "markersize is different than expected"
     assert (
-        "o" == plt.errorbar.call_args[1]["marker"]
+        plt.errorbar.call_args[1]["marker"] == "o"
     ), "marker is different than expected"
     assert (
-        "None" == plt.errorbar.call_args[1]["linestyle"]
+        plt.errorbar.call_args[1]["linestyle"] == "None"
     ), "linestyle is different than expected"
 
 
