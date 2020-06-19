@@ -118,7 +118,7 @@ def test_plot_residuals(plot_all_fixture):
 
 
 def test_show_or_export_cal_count(plot_all_fixture):
-    (plot_configuration, output_configuration), mocks = plot_all_fixture
+    (plot_configuration, _), mocks = plot_all_fixture
     show_or_export = mocks["show_or_export"]
     expected_count = len(
         [

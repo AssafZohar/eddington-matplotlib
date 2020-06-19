@@ -1,5 +1,4 @@
 """Plot residuals of a fitting."""
-from pathlib import Path
 
 import numpy as np
 from eddington_core import FitData
@@ -9,7 +8,6 @@ from eddington_matplotlib.util import (
     get_figure,
     horizontal_line,
     errorbar,
-    show_or_export,
 )
 
 

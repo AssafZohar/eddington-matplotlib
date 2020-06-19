@@ -13,13 +13,13 @@ from tests.plot import (
 
 @fixture_plus
 def plot_data_fixture(configurations, plt_mock):
-    plot_configuration, output_configuration = configurations
+    plot_configuration, _ = configurations
     fig = plot_data(data=data, plot_configuration=plot_configuration,)
     return fig, plot_configuration, plt_mock
 
 
 def test_result_figure(plot_data_fixture):
-    figure, plot_configuration, mocks = plot_data_fixture
+    figure, _, mocks = plot_data_fixture
     assert figure == mocks["figure"], "Returned figure is different than expected"
 
 

@@ -1,5 +1,4 @@
 """Plot fitting result."""
-from pathlib import Path
 import numpy as np
 from eddington_core import FitData
 
@@ -8,7 +7,6 @@ from eddington_matplotlib.util import (
     get_figure,
     errorbar,
     plot,
-    show_or_export,
 )
 
 

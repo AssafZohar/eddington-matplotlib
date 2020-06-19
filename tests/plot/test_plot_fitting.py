@@ -15,7 +15,7 @@ from tests.plot import (
 
 @fixture_plus
 def plot_fitting_fixture(configurations, plt_mock):
-    plot_configuration, output_configuration = configurations
+    plot_configuration, _ = configurations
     fig = plot_fitting(
         a=a, func=dummy_func, data=data, plot_configuration=plot_configuration,
     )
@@ -23,7 +23,7 @@ def plot_fitting_fixture(configurations, plt_mock):
 
 
 def test_result_figure(plot_fitting_fixture):
-    figure, plot_configuration, mocks = plot_fitting_fixture
+    figure, _, mocks = plot_fitting_fixture
     assert figure == mocks["figure"], "Returned figure is different than expected"
 
 
