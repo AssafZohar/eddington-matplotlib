@@ -1,62 +1,53 @@
-from pytest_cases import fixture_plus, cases_data
+from pytest_cases import fixture_plus
 
-from eddington_matplotlib import plot_data, PlotConfiguration
+from eddington_matplotlib import plot_data
 from tests.plot import (
     check_error_bar,
     data,
     check_x_label,
     check_y_label,
-    check_show_or_export,
     check_grid,
     check_title,
 )
-import tests.plot.plot_cases as cases
 
 
 @fixture_plus
-@cases_data(module=cases)
-def plot_data_fixture(case_data, plt_mock):
-    kwargs, output_path = case_data.get()
-    plot_configuration = PlotConfiguration(**kwargs)
-    plot_data(
-        data=data, plot_configuration=plot_configuration, output_path=output_path,
-    )
-    return plt_mock, dict(output_path=output_path, **kwargs)
+def plot_data_fixture(configurations, plt_mock):
+    plot_configuration, output_configuration = configurations
+    fig = plot_data(data=data, plot_configuration=plot_configuration,)
+    return fig, plot_configuration, plt_mock
+
+
+def test_result_figure(plot_data_fixture):
+    figure, plot_configuration, mocks = plot_data_fixture
+    assert figure == mocks["figure"], "Returned figure is different than expected"
 
 
 def test_title(plot_data_fixture):
-    mocks, expected = plot_data_fixture
-    plt, figure = mocks["plt"], mocks["figure"]
-    check_title(plt=plt, figure=figure, title=expected.get("data_title", None))
+    figure, plot_configuration, mocks = plot_data_fixture
+    plt = mocks["plt"]
+    check_title(plt=plt, figure=figure, title=plot_configuration.data_title)
 
 
 def test_xlabel(plot_data_fixture):
-    mocks, expected = plot_data_fixture
-    plt, figure = mocks["plt"], mocks["figure"]
-    check_x_label(plt=plt, figure=figure, xlabel=expected.get("xlabel", None))
+    figure, plot_configuration, mocks = plot_data_fixture
+    plt = mocks["plt"]
+    check_x_label(plt=plt, figure=figure, xlabel=plot_configuration.xlabel)
 
 
 def test_ylabel(plot_data_fixture):
-    mocks, expected = plot_data_fixture
-    plt, figure = mocks["plt"], mocks["figure"]
-    check_y_label(plt=plt, figure=figure, ylabel=expected.get("ylabel", None))
-
-
-def test_show_or_export(plot_data_fixture):
-    mocks, expected = plot_data_fixture
-    plt, figure = mocks["plt"], mocks["figure"]
-    check_show_or_export(
-        plt=plt, figure=figure, output_path=expected.get("output_path", None)
-    )
+    figure, plot_configuration, mocks = plot_data_fixture
+    plt = mocks["plt"]
+    check_y_label(plt=plt, figure=figure, ylabel=plot_configuration.ylabel)
 
 
 def test_grid(plot_data_fixture):
-    mocks, expected = plot_data_fixture
-    plt, figure = mocks["plt"], mocks["figure"]
-    check_grid(plt=plt, figure=figure, grid=expected.get("grid", False))
+    figure, plot_configuration, mocks = plot_data_fixture
+    plt = mocks["plt"]
+    check_grid(plt=plt, figure=figure, grid=plot_configuration.grid)
 
 
 def test_error_bar(plot_data_fixture):
-    mocks, _ = plot_data_fixture
+    _, _, mocks = plot_data_fixture
     plt, _ = mocks["plt"], mocks["figure"]
     check_error_bar(plt=plt, y=data.y)
