@@ -4,8 +4,9 @@ from pathlib import Path
 from eddington_core import FitData
 from mock import Mock
 import numpy as np
+from pytest_cases import fixture_plus
 
-from eddington_matplotlib import PlotConfiguration, OutputConfiguration, plot_all
+from eddington_matplotlib import plot_all
 from tests.plot import dummy_func
 
 
@@ -28,34 +29,21 @@ def plot_functions_mock(mocker):
     plot_data = mocker.patch("eddington_matplotlib.all.plot_data")
     plot_fitting = mocker.patch("eddington_matplotlib.all.plot_fitting")
     plot_residuals = mocker.patch("eddington_matplotlib.all.plot_residuals")
+    show_or_export = mocker.patch("eddington_matplotlib.all.show_or_export")
     result = Mock()
     result.a = a
     return dict(
         plot_data=plot_data,
         plot_fitting=plot_fitting,
         plot_residuals=plot_residuals,
+        show_or_export=show_or_export,
         result=result,
     )
 
 
-@pytest.fixture(
-    params=[
-        dict(),
-        dict(plot_data=True),
-        dict(plot_fitting=False),
-        dict(plot_residuals=False),
-        dict(print_results=False),
-    ]
-)
-def case_data(request, plot_functions_mock):
-    kwargs = request.param
-    plot_configuration = PlotConfiguration.build(
-        base_name=func.name, xmin=xmin, xmax=xmax, **kwargs
-    )
-    output_configuration = OutputConfiguration.build(
-        base_name=func.name, output_dir=output_dir
-    )
-
+@fixture_plus
+def plot_all_fixture(configurations, plot_functions_mock):
+    plot_configuration, output_configuration = configurations
     plot_all(
         func=func,
         data=data,
@@ -63,66 +51,86 @@ def case_data(request, plot_functions_mock):
         output_configuration=output_configuration,
         result=plot_functions_mock["result"],
     )
-    inp = dict(
-        plot_configuration=plot_configuration,
-        output_configuration=output_configuration,
-        kwargs=kwargs,
-    )
-    return inp, plot_functions_mock
+    return configurations, plot_functions_mock
 
 
-def test_export_result(case_data):
-    inp, mocks = case_data
-    kwargs = inp["kwargs"]
+def test_export_result(plot_all_fixture):
+    (plot_configuration, output_configuration), mocks = plot_all_fixture
+
     result = mocks["result"]
-    if kwargs.get("print_results", True):
+    if plot_configuration.print_results:
         result.print_or_export.assert_called_once_with(
-            inp["output_configuration"].result_output_path,
+            output_configuration.result_output_path,
         )
     else:
         result.print_or_export.assert_not_called()
 
 
-def test_plot_data(case_data):
-    inp, mocks = case_data
-    kwargs = inp["kwargs"]
-    if kwargs.get("plot_data", False):
-        mocks["plot_data"].assert_called_once_with(
-            data=data,
-            plot_configuration=inp["plot_configuration"],
-            output_path=inp["output_configuration"].data_output_path,
+def test_plot_data(plot_all_fixture):
+    (plot_configuration, output_configuration), mocks = plot_all_fixture
+
+    plot_data = mocks["plot_data"]
+    show_or_export = mocks["show_or_export"]
+    if plot_configuration.plot_data:
+        plot_data.assert_called_once_with(
+            data=data, plot_configuration=plot_configuration,
+        )
+        show_or_export.assert_any_call(
+            fig=plot_data.return_value,
+            output_path=output_configuration.data_output_path,
         )
     else:
-        mocks["plot_data"].assert_not_called()
+        plot_data.assert_not_called()
 
 
-def test_plot_fitting(case_data):
-    inp, mocks = case_data
-    kwargs = inp["kwargs"]
-    result = mocks["result"]
-    if kwargs.get("plot_fitting", True):
-        mocks["plot_fitting"].assert_called_once_with(
-            func=func,
-            data=data,
-            a=result.a,
-            plot_configuration=inp["plot_configuration"],
-            output_path=inp["output_configuration"].fitting_output_path,
+def test_plot_fitting(plot_all_fixture):
+    (plot_configuration, output_configuration), mocks = plot_all_fixture
+
+    plot_fitting = mocks["plot_fitting"]
+    show_or_export = mocks["show_or_export"]
+    if plot_configuration.plot_fitting:
+        plot_fitting.assert_called_once_with(
+            func=dummy_func, a=a, data=data, plot_configuration=plot_configuration,
+        )
+        show_or_export.assert_any_call(
+            fig=plot_fitting.return_value,
+            output_path=output_configuration.fitting_output_path,
         )
     else:
-        mocks["plot_fitting"].assert_not_called()
+        plot_fitting.assert_not_called()
 
 
-def test_plot_residuals(case_data):
-    inp, mocks = case_data
-    kwargs = inp["kwargs"]
-    result = mocks["result"]
-    if kwargs.get("plot_residuals", True):
-        mocks["plot_residuals"].assert_called_once_with(
-            func=func,
-            data=data,
-            a=result.a,
-            plot_configuration=inp["plot_configuration"],
-            output_path=inp["output_configuration"].residuals_output_path,
+def test_plot_residuals(plot_all_fixture):
+    (plot_configuration, output_configuration), mocks = plot_all_fixture
+
+    plot_residuals = mocks["plot_residuals"]
+    show_or_export = mocks["show_or_export"]
+    if plot_configuration.plot_residuals:
+        plot_residuals.assert_called_once_with(
+            func=dummy_func, a=a, data=data, plot_configuration=plot_configuration,
+        )
+        show_or_export.assert_any_call(
+            fig=plot_residuals.return_value,
+            output_path=output_configuration.residuals_output_path,
         )
     else:
-        mocks["plot_residuals"].assert_not_called()
+        plot_residuals.assert_not_called()
+
+
+def test_show_or_export_cal_count(plot_all_fixture):
+    (plot_configuration, _), mocks = plot_all_fixture
+    show_or_export = mocks["show_or_export"]
+    expected_count = len(
+        [
+            boolean
+            for boolean in [
+                plot_configuration.plot_data,
+                plot_configuration.plot_fitting,
+                plot_configuration.plot_residuals,
+            ]
+            if boolean
+        ]
+    )
+    assert (
+        expected_count == show_or_export.call_count
+    ), "show_or_export call count is different than expected"

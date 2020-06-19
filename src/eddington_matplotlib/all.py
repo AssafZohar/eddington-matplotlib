@@ -6,6 +6,7 @@ from eddington_matplotlib.residuals import plot_residuals
 from eddington_matplotlib.output_configuration import OutputConfiguration
 from eddington_matplotlib.plot_configuration import PlotConfiguration
 from eddington_matplotlib.data import plot_data
+from eddington_matplotlib.util import show_or_export
 
 
 def plot_all(
@@ -28,24 +29,19 @@ def plot_all(
     if plot_configuration.print_results:
         result.print_or_export(output_configuration.result_output_path)
     if plot_configuration.plot_data:
-        plot_data(
-            data=data,
-            plot_configuration=plot_configuration,
-            output_path=output_configuration.data_output_path,
-        )
+        data_fig = plot_data(data=data, plot_configuration=plot_configuration,)
+        show_or_export(fig=data_fig, output_path=output_configuration.data_output_path)
     if plot_configuration.plot_fitting:
-        plot_fitting(
-            func=func,
-            data=data,
-            plot_configuration=plot_configuration,
-            a=result.a,
-            output_path=output_configuration.fitting_output_path,
+        fitting_fig = plot_fitting(
+            func=func, data=data, plot_configuration=plot_configuration, a=result.a
+        )
+        show_or_export(
+            fig=fitting_fig, output_path=output_configuration.fitting_output_path
         )
     if plot_configuration.plot_residuals:
-        plot_residuals(
-            func=func,
-            data=data,
-            plot_configuration=plot_configuration,
-            a=result.a,
-            output_path=output_configuration.residuals_output_path,
+        residuals_fig = plot_residuals(
+            func=func, data=data, plot_configuration=plot_configuration, a=result.a,
+        )
+        show_or_export(
+            fig=residuals_fig, output_path=output_configuration.residuals_output_path
         )
