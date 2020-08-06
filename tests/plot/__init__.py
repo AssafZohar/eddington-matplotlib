@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from mock import call
 
-from eddington_core import FitData, fit_function
+from eddington import FitData, fit_function
 
 
 @fit_function(n=2, save=False)
