@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
 
-from eddington_core import FitData
+from eddington import FitData
 from mock import Mock
 import numpy as np
 from pytest_cases import fixture_plus

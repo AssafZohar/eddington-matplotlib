@@ -1,5 +1,5 @@
 """Plot all desired plot."""
-from eddington_core import FitData, FitResult
+from eddington import FitData, FitResult
 
 from eddington_matplotlib.fitting import plot_fitting
 from eddington_matplotlib.residuals import plot_residuals

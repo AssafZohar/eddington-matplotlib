@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 import numpy as np
 
-from eddington_core import FitData, FitFunctionsRegistry, FitResult
+from eddington import FitData, FitFunctionsRegistry, FitResult
 from eddington_matplotlib import PlotConfiguration, OutputConfiguration, plot_all
 
 parser = ArgumentParser(description="Plot data and results from file")

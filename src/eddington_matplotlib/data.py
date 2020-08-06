@@ -1,5 +1,5 @@
 """Plot fitting data."""
-from eddington_core import FitData
+from eddington import FitData
 
 from eddington_matplotlib.plot_configuration import PlotConfiguration
 from eddington_matplotlib.util import (
