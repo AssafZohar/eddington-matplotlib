@@ -65,7 +65,7 @@ def plot(x, y, fig):  # pylint: disable=C0103
     :param y: Y values
     :param fig: Plot figure
     """
-    plt.plot(x, y, figure=fig)
+    return plt.plot(x, y, figure=fig)
 
 
 def horizontal_line(  # pylint: disable=C0103
@@ -114,3 +114,17 @@ def show_or_export(fig: plt.Figure, output_path=None):
         plt.show()
         return
     fig.savefig(output_path)
+
+
+def legend(fig: plt.Figure, fit, fit_legend):
+    """
+    Adds legend to plot.
+
+    :param fig: a plot to figure
+    :param fit: plot fit
+    :param data_fit: legend title for fit
+    """
+    if fit_legend is None:
+        return
+    fit.set_label(fit_legend)
+    plt.legend()

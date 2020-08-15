@@ -21,6 +21,7 @@ class PlotConfiguration:  # pylint: disable=R0902
     plot_fitting: bool = True
     plot_residuals: bool = True
     plot_data: bool = False
+    fit_legend: Union[str, None] = None
 
     @classmethod
     def build(  # pylint: disable=R0913
@@ -33,6 +34,7 @@ class PlotConfiguration:  # pylint: disable=R0902
         ycolumn=None,
         xlabel=None,
         ylabel=None,
+        fit_legend=None,
         **kwargs,
     ):
         """
@@ -44,9 +46,10 @@ class PlotConfiguration:  # pylint: disable=R0902
         :param data_title: str or None. Title for the data plot.
         :param residuals_title: str or None. Title for the residuals plot.
         :param xcolumn: str, int or None. x column specifier
-        :param ycolumn: str, int or None. x column specifier
+        :param ycolumn: str, int or None. y column specifier
         :param xlabel: str or None. Label for the x axis.
         :param ylabel: str or None. Label for the y axis.
+        :param fit_legend: str or None. Legend text for fit
         :param kwargs: dict. Extra arguments.
         :return: :class:`PlotConfiguration` instance
         """
@@ -62,6 +65,7 @@ class PlotConfiguration:  # pylint: disable=R0902
             title=title,
             data_title=data_title,
             residuals_title=residuals_title,
+            fit_legend=fit_legend,
             **kwargs,
         )
 
