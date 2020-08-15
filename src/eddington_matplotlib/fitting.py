@@ -37,6 +37,6 @@ def plot_fitting(  # pylint: disable=C0103,R0913
         plot_configuration.xmin, plot_configuration.xmax, step=step
     )
     y = func(a, x)  # pylint: disable=C0103
-    fit, = plot(fig=fig, x=x, y=y)
+    fit = plot(fig=fig, x=x, y=y)
     legend(fig=fig, fit=fit, fit_legend=plot_configuration.fit_legend)
     return fig
